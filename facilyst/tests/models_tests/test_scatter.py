@@ -4,7 +4,7 @@ import pytest
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from facilyst.models import Scatter
+from facilyst.graphs import Scatter
 
 
 def test_scatter():

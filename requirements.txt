@@ -10,3 +10,4 @@ plotly>=5.0.0
 graphviz>=0.13
 sktime>=0.7.0;python_version<"3.9"
 click>=7.1.2
+woodwork>=0.12.0

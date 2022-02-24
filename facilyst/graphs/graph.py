@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from matplotlib import rcParams
+import woodwork as ww
 
 
 class Graph(ABC):

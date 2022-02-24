@@ -1,6 +1,6 @@
-from . import graph
-from facilyst import graphs
-import facilyst.models
-import facilyst.preprocessing
+from .graphs import graph
+from . import graphs
+from . import models
+from . import preprocessing
 
 __version__ = "0.0.1"
