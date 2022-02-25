@@ -11,7 +11,7 @@ setup(
     description='facilyst is a library that aggregates functions and utilities commonly used in the course of data science and machine learning to facilitate ease of access.',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/ParthivNaresh/Facilyst/',
+    url='https://github.com/ParthivNaresh/facilyst/',
     python_requires='>=3.8, <4',
     install_requires=open('requirements.txt').readlines(),
     tests_require=open('test-requirements.txt').readlines(),

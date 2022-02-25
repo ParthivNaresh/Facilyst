@@ -1,8 +1,5 @@
-import numpy as np
+import matplotlib
 import pandas as pd
-import pytest
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 from facilyst.graphs import Scatter
 
@@ -12,6 +9,5 @@ def test_scatter():
     X["x_axis"] = [i for i in range(10)]
     X["y_axis"] = [i for i in range(10)]
 
-    scatter = Scatter(dataset=X, x="x_axis", y="y_axis")
-    print(scatter)
-    plt.show()
+    scatter = Scatter(x="x_axis", y="y_axis", dataset=X)
+    assert issubclass(type(scatter.graph_obj), matplotlib.axes.SubplotBase)
