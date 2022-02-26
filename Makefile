@@ -1,14 +1,20 @@
+.PHONY: clean
+clean:
+	find . -name '*.pyo' -delete
+	find . -name '*.pyc' -delete
+	find . -name __pycache__ -delete
+	find . -name '*~' -delete
+	find . -name '.coverage.*' -delete
+
 .PHONY: lint
 lint:
 	isort --check-only facilyst
 	black facilyst -t py39 --check
-	pydocstyle facilyst/ --convention=google --add-ignore=D107 --add-select=D400 --match-dir='^(?!(tests)).*'
-	flake8 facilyst
 
 .PHONY: lint-fix
 lint-fix:
-	black -t py39 facilyst
 	isort facilyst
+	black -t py39 facilyst
 
 .PHONY: installdeps
 installdeps:
