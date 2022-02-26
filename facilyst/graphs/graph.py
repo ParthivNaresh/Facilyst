@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 import pandas as pd
+import woodwork as ww
 
 
 class Graph(ABC):

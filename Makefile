@@ -1,7 +1,6 @@
 .PHONY: lint
 lint:
 	isort --check-only facilyst
-	sh ./import_or_skip.sh
 	black facilyst -t py39 --check
 	pydocstyle facilyst/ --convention=google --add-ignore=D107 --add-select=D400 --match-dir='^(?!(tests)).*'
 	flake8 facilyst
