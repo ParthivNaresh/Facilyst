@@ -49,7 +49,9 @@ def create_data(
 
     if data_type == "target":
         class_args = {
-            k: v for k, v in all_kw_args.items() if k in ["library", "num_rows", "target_dtype"]
+            k: v
+            for k, v in all_kw_args.items()
+            if k in ["library", "num_rows", "target_dtype"]
         }
     elif data_type == "dates":
         class_args = {k: v for k, v in all_kw_args.items() if k in []}

@@ -42,7 +42,9 @@ class Features(MockBase):
 
         if all_dtypes:
             parameters = {
-                k: True for k, v in kw_args.items() if k not in ["self", "library", "num_rows", "__class__"]
+                k: True
+                for k, v in kw_args.items()
+                if k not in ["self", "library", "num_rows", "__class__"]
             }
         else:
             parameters = {
@@ -50,10 +52,10 @@ class Features(MockBase):
                 for k, v in kw_args.items()
                 if k not in ["self", "library", "num_rows", "__class__"] and v
             }
-            if not any(parameters.values()):  # All False flags results in all dtypes being included
-                parameters = {
-                    k: True for k, v in kw_args.items()
-                }
+            if not any(
+                parameters.values()
+            ):  # All False flags results in all dtypes being included
+                parameters = {k: True for k, v in kw_args.items()}
 
         super().__init__(library, num_rows, parameters)
 
