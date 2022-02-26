@@ -38,7 +38,7 @@ def mock_dtypes(num_rows=100):
         ),
         "dates": pd.date_range("1/1/2001", periods=num_rows),
         "texts": [
-            f"My children are miserable failures, all {i} of them!"
+            f"My children are miserable failures, all {i} of them"
             for i in range(num_rows)
         ],
         "ints_with_na": np.random.choice(

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='facilyst',
-    version='0.0.1',
+    version='0.0.2',
     author='Parthiv Naresh',
     author_email='pppn95@gmail.com',
     description='facilyst is a library that aggregates functions and utilities commonly used in the course of data science and machine learning to facilitate ease of access.',

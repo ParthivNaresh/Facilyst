@@ -45,7 +45,6 @@ def create_data(
     class_options = {"features": Features, "target": Target, "dates": Dates}
 
     all_kw_args = {k: v for k, v in kw_args.items() if k not in ["data_type"]}
-    all_kw_args["library"] = library
 
     if data_type == "target":
         class_args = {

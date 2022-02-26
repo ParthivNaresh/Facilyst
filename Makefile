@@ -14,14 +14,18 @@ lint-fix:
 .PHONY: installdeps
 installdeps:
 	pip install --upgrade pip -q
-	pip install -e . -q
+	pip install -e .
 
 .PHONY: installdeps-test
 installdeps-test:
 	pip install -e . -q
-	pip install -r test-requirements.txt -q
+	pip install -r test-requirements.txt
 
 .PHONY: installdeps-dev
 installdeps-dev:
 	pip install -e . -q
-	pip install -r dev-requirements.txt -q
+	pip install -r dev-requirements.txt
+
+.PHONY: tests
+tests:
+	pytest facilyst/tests/ -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml

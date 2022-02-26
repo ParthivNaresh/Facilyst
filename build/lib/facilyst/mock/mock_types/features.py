@@ -42,18 +42,14 @@ class Features(MockBase):
 
         if all_dtypes:
             parameters = {
-                k: True for k, v in kw_args.items() if k not in ["self", "library", "num_rows", "__class__"]
+                k: v for k, v in kw_args.items() if k not in ["self", "library", "num_rows"]
             }
         else:
             parameters = {
                 k: v
                 for k, v in kw_args.items()
-                if k not in ["self", "library", "num_rows", "__class__"] and v
+                if k not in ["self", "library", "num_rows"] and v
             }
-            if not any(parameters.values()):  # All False flags results in all dtypes being included
-                parameters = {
-                    k: True for k, v in kw_args.items()
-                }
 
         super().__init__(library, num_rows, parameters)
 
@@ -87,7 +83,7 @@ class Features(MockBase):
         return mocked_df
 
     @staticmethod
-    def _refine_dtypes(dtypes, num_rows=100):
+    def _refine_dtypes(dtypes=None, num_rows=100):
         """
         Internal function that selects the dtypes to be kept from the full dataset.
 
@@ -96,4 +92,7 @@ class Features(MockBase):
         :return: A refined form of the full set of columns available.
         """
         full_mock = mock_dtypes(num_rows)
-        return {k: v for k, v in full_mock.items() if k in dtypes}
+        if dtypes:
+            return {k: v for k, v in full_mock.items() if k in dtypes}
+        else:
+            return full_mock

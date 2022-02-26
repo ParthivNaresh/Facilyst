@@ -7,12 +7,10 @@ class MockBase(ABC):
         self.num_rows = num_rows
         self.parameters = parameters
 
-        self.final_output = self.create_data()
-
     @abstractmethod
     def create_data(self):
         """Abstract method to be called by child classes to create the final data"""
 
     def get_data(self):
         """Returns the final data"""
-        return self.final_output
+        return self.create_data()
