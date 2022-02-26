@@ -29,7 +29,7 @@ jobs:
           pip install virtualenv
           virtualenv test_python -q
           source test_python/bin/activate
-          make installdeps
+          make installdeps-dev
       - name: Run Lint Test
         run: |
           source test_python/bin/activate
