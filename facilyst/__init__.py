@@ -1,5 +1,5 @@
 import facilyst.graphs
-import facilyst.mock
+import facilyst.mocks
 import facilyst.models
 import facilyst.preprocessing
 import facilyst.utils

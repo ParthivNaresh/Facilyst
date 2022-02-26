@@ -1,11 +1,11 @@
 import seaborn as sns
 
-from . import Graph
+from facilyst.graphs import GraphBase
 
 
-class Scatter(Graph):
+class Line(GraphBase):
 
-    name = "Scatterplot"
+    name = "Lineplot"
 
     def __init__(
         self, x=None, y=None, dataset=None, hue=None, style=None, plot_size=(11.7, 8.27)
@@ -14,10 +14,10 @@ class Scatter(Graph):
 
         extra_parameters = {"plot_size": plot_size}
 
-        sns_scatter = sns.scatterplot
+        sns_line = sns.lineplot
 
         super().__init__(
-            graph_obj=sns_scatter,
+            graph_obj=sns_line,
             parameters=parameters,
             extra_parameters=extra_parameters,
         )

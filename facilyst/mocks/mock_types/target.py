@@ -1,10 +1,13 @@
 import pandas as pd
 
-from facilyst.mock import MockBase
-from facilyst.mock.mock_types.utils import mock_dtypes
+from facilyst.mocks import MockBase
+from facilyst.mocks.mock_types.utils import mock_dtypes
 
 
 class Target(MockBase):
+
+    name = "Target"
+
     def __init__(self, library="pandas", num_rows=100, target_dtype="ints"):
         """
 

@@ -1,7 +1,10 @@
-from facilyst.mock.mock_base import MockBase
+from facilyst.mocks.mock_base import MockBase
 
 
 class Dates(MockBase):
+
+    name = "Dates"
+
     def __init__(self):
         pass
 

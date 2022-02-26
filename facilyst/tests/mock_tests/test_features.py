@@ -1,11 +1,13 @@
 import numpy as np
 import pytest
 
-from facilyst.mock import Features
+from facilyst.mocks import Features
 
 
 def test_features_default():
     features_class = Features()
+    assert features_class.name == "Features"
+
     features = features_class.get_data()
     assert np.array_equal(
         features.columns, np.array(["ints", "rand_ints", "floats", "rand_floats"])

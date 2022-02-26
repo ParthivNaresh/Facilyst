@@ -7,6 +7,11 @@ class MockBase(ABC):
         self.num_rows = num_rows
         self.parameters = parameters
 
+    @property
+    @abstractmethod
+    def name(self):
+        """Name of the mock type"""
+
     @abstractmethod
     def create_data(self):
         """Abstract method to be called by child classes to create the final data"""

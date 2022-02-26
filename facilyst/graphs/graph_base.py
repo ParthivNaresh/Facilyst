@@ -4,7 +4,7 @@ import pandas as pd
 import woodwork as ww
 
 
-class Graph(ABC):
+class GraphBase(ABC):
     def __init__(self, graph_obj, parameters, extra_parameters):
         self.parameters = parameters
         self.extra_parameters = extra_parameters

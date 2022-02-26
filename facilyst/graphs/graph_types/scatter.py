@@ -1,9 +1,9 @@
 import seaborn as sns
 
-from . import Graph
+from facilyst.graphs import GraphBase
 
 
-class Scatter(Graph):
+class Scatter(GraphBase):
 
     name = "Scatterplot"
 

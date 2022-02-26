@@ -1,5 +1,5 @@
-from facilyst.mock import Dates, Features, Target
-from facilyst.mock.mock_types import handle_data_and_library_type
+from facilyst.mocks import Dates, Features, Target
+from facilyst.mocks.mock_types import handle_data_and_library_type
 
 
 def create_data(
