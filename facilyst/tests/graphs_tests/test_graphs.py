@@ -65,6 +65,18 @@ def test_warnings_with_dataset(
         )
 
 
+def test_multidim_x_y_without_dataset(multi_dim_data):
+    with pytest.raises(
+        ValueError,
+        match="If `dataset` is None, both x and y must be one dimensional!",
+    ):
+        _ = Scatter(
+            dataset=None,
+            x=multi_dim_data["numpy"],
+            y=multi_dim_data["numpy"],
+        )
+
+
 @pytest.mark.parametrize("dataset_type", ["pandas", "numpy"])
 @pytest.mark.parametrize("x_name", [0, 11])
 @pytest.mark.parametrize("y_name", [0, 11])

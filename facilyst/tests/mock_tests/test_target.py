@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import pytest
 
 from facilyst.mocks import Target
@@ -15,7 +16,7 @@ def test_target_default():
     assert list(target_class.parameters.keys()) == ["target_dtype"]
 
 
-@pytest.mark.parametrize("library", ["pandas", "Numpy", "third_option"])
+@pytest.mark.parametrize("library", ["PANDAS", "Numpy", "third_option"])
 @pytest.mark.parametrize("num_rows", [10, 100, 300, 1000, 10000])
 @pytest.mark.parametrize(
     "target_dtype",
@@ -38,5 +39,10 @@ def test_target_parameters(library, num_rows, target_dtype):
     target_class = Target(**kw_args)
     target = target_class.get_data()
 
-    assert target.name == target_dtype if target_dtype else "ints"
+    if library.lower() in ["pandas", "third_option"]:
+        assert isinstance(target, pd.Series)
+        assert target.name == target_dtype if target_dtype else "ints"
+    else:
+        assert isinstance(target, np.ndarray)
+
     assert target.shape == (num_rows,)

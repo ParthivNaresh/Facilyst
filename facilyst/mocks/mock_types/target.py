@@ -37,9 +37,9 @@ class Target(MockBase):
         mocked = Target._refine_dtypes(dtype_to_keep, self.num_rows)
         mocked_series = pd.Series(mocked, name=dtype_to_keep)
 
-        if self.library == "pandas":
+        if self.library.lower() == "pandas":
             return mocked_series
-        elif self.library == "numpy":
+        elif self.library.lower() == "numpy":
             return mocked_series.to_numpy()
 
         return mocked_series
