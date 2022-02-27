@@ -15,11 +15,12 @@ def test_target_default():
     assert list(target_class.parameters.keys()) == ["target_dtype"]
 
 
-@pytest.mark.parametrize("library", ["pandas", "numpy"])
+@pytest.mark.parametrize("library", ["pandas", "Numpy", "third_option"])
 @pytest.mark.parametrize("num_rows", [10, 100, 300, 1000, 10000])
 @pytest.mark.parametrize(
     "target_dtype",
     [
+        "",
         "ints",
         "rand_ints",
         "floats",
@@ -32,9 +33,10 @@ def test_target_default():
         "floats_with_na",
     ],
 )
-def test_features_parameters(library, num_rows, target_dtype):
+def test_target_parameters(library, num_rows, target_dtype):
     kw_args = locals()
     target_class = Target(**kw_args)
     target = target_class.get_data()
 
+    assert target.name == target_dtype if target_dtype else "ints"
     assert target.shape == (num_rows,)

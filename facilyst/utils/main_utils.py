@@ -1,4 +1,4 @@
-from facilyst.mocks import Dates, Features, Target
+from facilyst.mocks import Features, Target
 from facilyst.mocks.mock_types import handle_data_and_library_type
 
 
@@ -42,7 +42,7 @@ def create_data(
     kw_args = locals()
     data_type, library = handle_data_and_library_type(data_type, library)
 
-    class_options = {"features": Features, "target": Target, "dates": Dates}
+    class_options = {"features": Features, "target": Target}
 
     all_kw_args = {k: v for k, v in kw_args.items() if k not in ["data_type"]}
     all_kw_args["library"] = library
@@ -53,10 +53,10 @@ def create_data(
             for k, v in all_kw_args.items()
             if k in ["library", "num_rows", "target_dtype"]
         }
-    elif data_type == "dates":
-        class_args = {k: v for k, v in all_kw_args.items() if k in []}
     else:
         class_args = {k: v for k, v in all_kw_args.items() if k not in ["target_dtype"]}
+    # elif data_type == "dates":
+    #    class_args = {k: v for k, v in all_kw_args.items() if k in []}
 
     data_class = class_options[data_type](**class_args)
     return data_class.get_data()
