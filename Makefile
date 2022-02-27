@@ -32,5 +32,5 @@ installdeps-dev:
 	pip install -r dev-requirements.txt
 
 .PHONY: test
-tests:
+test:
 	pytest facilyst/tests/ -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml

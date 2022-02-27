@@ -43,7 +43,7 @@ jobs:
       - name: Run unit tests
         run: |
           source test_python/bin/activate
-          make tests
+          make test
       - name: Upload pytest duration artifact
         uses: actions/upload-artifact@v2
         with:
