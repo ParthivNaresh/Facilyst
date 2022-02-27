@@ -1,14 +1,14 @@
 import seaborn as sns
 
-from facilyst.graph import Graph
+from facilyst.graphs import GraphBase
 
 
-class Line(Graph):
+class Line(GraphBase):
 
     name = "Lineplot"
 
     def __init__(
-        self, dataset=None, x=None, y=None, hue=None, style=None, plot_size=(11.7, 8.27)
+        self, x=None, y=None, dataset=None, hue=None, style=None, plot_size=(11.7, 8.27)
     ):
         parameters = {"data": dataset, "x": x, "y": y, "hue": hue, "style": style}
 
