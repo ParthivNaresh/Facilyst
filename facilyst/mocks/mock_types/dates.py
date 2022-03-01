@@ -1,6 +1,7 @@
+import re
+
 import numpy as np
 import pandas as pd
-import re
 
 from facilyst.mocks import MockBase
 
@@ -20,11 +21,20 @@ class Dates(MockBase):
         7: 50,
         8: 60,
         9: 70,
-        10: 80
+        10: 80,
     }
 
-    def __init__(self, library="pandas", num_rows=100, start_date="1/1/2001", frequency="1D",
-                 missing=False, misaligned=False, duplicates=False, chaos=1):
+    def __init__(
+        self,
+        library="pandas",
+        num_rows=100,
+        start_date="1/1/2001",
+        frequency="1D",
+        missing=False,
+        misaligned=False,
+        duplicates=False,
+        chaos=1,
+    ):
         """
         :param library:
         :param num_rows:
@@ -58,13 +68,15 @@ class Dates(MockBase):
             "missing": self.missing,
             "misaligned": self.misaligned,
             "duplicates": self.duplicates,
-            "chaos": self.chaos
+            "chaos": self.chaos,
         }
 
         super().__init__(library, num_rows, parameters)
 
     def create_data(self):
-        dates_ = pd.date_range(start=self.start_date, periods=self.num_rows, freq=self.frequency)
+        dates_ = pd.date_range(
+            start=self.start_date, periods=self.num_rows, freq=self.frequency
+        )
         if self.chaos:
             dates_ = self.make_uninferrable(dates_)
         dates_ = self.handle_library(dates_)
@@ -72,23 +84,39 @@ class Dates(MockBase):
 
     def validate_num_rows(self):
         if self.chaos and (self.num_rows < 30):
-            raise ValueError(f"The `num_rows` parameter must be a minimum of 30 if chaos is not 0.")
+            raise ValueError(
+                f"The `num_rows` parameter must be a minimum of 30 if chaos is not 0."
+            )
 
     def make_uninferrable(self, dates_):
         chaos_percent = Dates.chaos_percentage[self.chaos] / 100
         num_chaos_rows = chaos_percent * self.num_rows
-        num_of_each_issue = int(num_chaos_rows // sum([self.missing, self.misaligned, self.duplicates]))
+        num_of_each_issue = int(
+            num_chaos_rows // sum([self.missing, self.misaligned, self.duplicates])
+        )
         all_indices_to_consider = np.arange(self.num_rows)
         if self.missing:
-            random_missing_indices = np.random.choice(all_indices_to_consider, num_of_each_issue, replace=False)
-            all_indices_to_consider = np.setdiff1d(all_indices_to_consider, random_missing_indices)
+            random_missing_indices = np.random.choice(
+                all_indices_to_consider, num_of_each_issue, replace=False
+            )
+            all_indices_to_consider = np.setdiff1d(
+                all_indices_to_consider, random_missing_indices
+            )
             dates_ = Dates.remove_missing(dates_, random_missing_indices)
         if self.misaligned:
-            random_misaligned_indices = np.random.choice(all_indices_to_consider, num_of_each_issue, replace=False)
-            all_indices_to_consider = np.setdiff1d(all_indices_to_consider, random_misaligned_indices)
-            dates_ = Dates.shift_misaligned(dates_, random_misaligned_indices, self.frequency)
+            random_misaligned_indices = np.random.choice(
+                all_indices_to_consider, num_of_each_issue, replace=False
+            )
+            all_indices_to_consider = np.setdiff1d(
+                all_indices_to_consider, random_misaligned_indices
+            )
+            dates_ = Dates.shift_misaligned(
+                dates_, random_misaligned_indices, self.frequency
+            )
         if self.duplicates:
-            random_duplicate_indices = np.random.choice(all_indices_to_consider, num_of_each_issue, replace=False)
+            random_duplicate_indices = np.random.choice(
+                all_indices_to_consider, num_of_each_issue, replace=False
+            )
             dates_ = Dates.add_duplicates(dates_, random_duplicate_indices)
         return dates_
 
@@ -110,7 +138,9 @@ class Dates(MockBase):
             num_freq *= 365
             str_freq = "D"
         elif str_freq == "MS":
-            num_freq *= 28  # Because February is the shortest month, it's a limiting factor
+            num_freq *= (
+                28  # Because February is the shortest month, it's a limiting factor
+            )
             str_freq = "D"
         current_td = pd.Timedelta(int(num_freq), str_freq)
 
@@ -123,7 +153,9 @@ class Dates(MockBase):
         return datetime_series
 
     @staticmethod
-    def add_duplicates(dates_, duplicate_indices):  # Currently adds values to entire Series, maybe change logic so num_rows doesn't change
+    def add_duplicates(
+        dates_, duplicate_indices
+    ):  # Currently adds values to entire Series, maybe change logic so num_rows doesn't change
         datetime_series = pd.Series(dates_)
         duplicate_values = pd.Series(datetime_series.iloc[duplicate_indices].values)
         datetime_series = datetime_series.append(duplicate_values)
@@ -143,4 +175,3 @@ class Dates(MockBase):
         elif self.library.lower() == "numpy":
             return dates_.to_numpy()
         return dates_
-

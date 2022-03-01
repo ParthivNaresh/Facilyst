@@ -9,8 +9,8 @@ from facilyst.mocks import Dates
 def test_warning(num_rows):
     if num_rows < 30:
         with pytest.raises(
-                ValueError,
-                match="The `num_rows` parameter must be a minimum of 30 if chaos is not 0.",
+            ValueError,
+            match="The `num_rows` parameter must be a minimum of 30 if chaos is not 0.",
         ):
             dates_class = Dates(num_rows=num_rows, misaligned=True)
     else:
@@ -18,11 +18,11 @@ def test_warning(num_rows):
         assert dates_class.chaos == 1
 
 
-@pytest.mark.parametrize("library", ["Pandas", "numpy"])
+@pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
 def test_library(library):
     dates_class = Dates(library=library, misaligned=True)
     dates_data = dates_class.get_data()
-    if library.lower() == "pandas":
+    if library.lower() in ["pandas", "third_option"]:
         assert isinstance(dates_data, pd.DatetimeIndex)
     else:
         assert isinstance(dates_data, np.ndarray)
@@ -49,24 +49,39 @@ def test_dates_default():
 @pytest.mark.parametrize("start_date", ["1/1/2001", "3/5/2001"])
 @pytest.mark.parametrize("num_freq", ["", "2"])
 @pytest.mark.parametrize("str_freq", ["S", "D", "W", "MS", "A"])
-@pytest.mark.parametrize("missing, misaligned, duplicates",
-                         [[False, False, True],
-                          [False, False, True],
-                          [True, True, False],
-                          [False, True, True],
-                          [True, False, True],
-                          [True, True, False],
-                          [True, True, True]])
+@pytest.mark.parametrize(
+    "missing, misaligned, duplicates",
+    [
+        [False, False, True],
+        [False, False, True],
+        [True, True, False],
+        [False, True, True],
+        [True, False, True],
+        [True, True, False],
+        [True, True, True],
+    ],
+)
 @pytest.mark.parametrize("chaos", [0, 1, 3, 7, 10])
-def test_dates_variations(num_rows, start_date, num_freq, str_freq, missing, misaligned, duplicates, chaos):
-    dates_class = Dates(num_rows=num_rows, start_date=start_date, frequency=num_freq+str_freq,
-                        missing=missing, misaligned=misaligned, duplicates=duplicates, chaos=chaos)
+def test_dates_variations(
+    num_rows, start_date, num_freq, str_freq, missing, misaligned, duplicates, chaos
+):
+    dates_class = Dates(
+        num_rows=num_rows,
+        start_date=start_date,
+        frequency=num_freq + str_freq,
+        missing=missing,
+        misaligned=misaligned,
+        duplicates=duplicates,
+        chaos=chaos,
+    )
     dates_data = dates_class.get_data()
 
     if duplicates:
         chaos_percent = Dates.chaos_percentage[chaos] / 100
         num_chaos_rows = chaos_percent * num_rows
-        num_of_each_issue = int(num_chaos_rows) // sum([missing, misaligned, duplicates])
+        num_of_each_issue = int(num_chaos_rows) // sum(
+            [missing, misaligned, duplicates]
+        )
         assert dates_data.shape == (num_rows + num_of_each_issue,)
     else:
         assert dates_data.shape == (num_rows,)
