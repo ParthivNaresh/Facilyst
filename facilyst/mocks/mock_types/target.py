@@ -16,8 +16,6 @@ class Target(MockBase):
         :param target_dtype: The data type that should be returned in the target. Options are 'ints', 'rand_ints', 'floats',
         'rand_floats', 'booleans', and 'categoricals'.
         """
-        self.library = library.lower()
-
         parameters = {"target_dtype": target_dtype}
 
         super().__init__(library, num_rows, parameters)
