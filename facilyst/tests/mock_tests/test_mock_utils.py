@@ -1,6 +1,6 @@
-from facilyst.mocks import Features, Target, _all_mock_data_types
+from facilyst.mocks import Dates, Features, Target, _all_mock_data_types
 
-all_mock_data_types = [Features, Target]
+all_mock_data_types = [Dates, Features, Target]
 
 
 def test_mock_data_children():

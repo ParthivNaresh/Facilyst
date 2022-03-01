@@ -1,4 +1,4 @@
-name: Unit tests - Linux
+name: Unit Tests - Linux
 
 on:
   pull_request:

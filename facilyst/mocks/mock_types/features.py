@@ -41,7 +41,6 @@ class Features(MockBase):
         :param all_dtypes: Flag that includes all columns. Defaults to False.
         """
         kw_args = locals()
-        self.library = library.lower()
 
         if all_dtypes:
             parameters = {
