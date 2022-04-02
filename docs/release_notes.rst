@@ -3,6 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
+        * Added ``Wave`` mock type :pr:`4`
         * Added ``Features``, ``Target``, and ``Dates`` mock types :pr:`3`
         * Added ``Scatter`` and ``Line`` graph types :pr:`3`
         * Added ``MockBase`` parent class :pr:`3`

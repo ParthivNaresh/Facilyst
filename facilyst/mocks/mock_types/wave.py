@@ -68,9 +68,19 @@ class Wave(MockBase):
                 start = end
             split_signals = []
             for interval in split_indices:
-                samples = np.arange(interval[1] - interval[0]) / (interval[1] - interval[0])
-                amplitude = self.amplitude if not self.random_amplitudes else np.random.choice([1, 2, 3], 1)[0]
-                frequency = 1 if not self.random_frequency else np.random.choice([1, 2, 3], 1)[0]
+                samples = np.arange(interval[1] - interval[0]) / (
+                    interval[1] - interval[0]
+                )
+                amplitude = (
+                    self.amplitude
+                    if not self.random_amplitudes
+                    else np.random.choice([1, 2, 3], 1)[0]
+                )
+                frequency = (
+                    1
+                    if not self.random_frequency
+                    else np.random.choice([1, 2, 3], 1)[0]
+                )
                 if self.wave_type == "sine":
                     signal = amplitude * np.sin(2 * np.pi * frequency * samples)
                 elif self.wave_type == "cosine":
