@@ -77,16 +77,6 @@ def test_wave_default():
     assert wave_data.shape == (100,)
 
 
-@pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
-def test_library(library):
-    wave_class = Wave(library=library)
-    wave_data = wave_class.get_data()
-    if library.lower() in ["pandas", "third_option"]:
-        assert isinstance(wave_data, pd.Series)
-    else:
-        assert isinstance(wave_data, np.ndarray)
-
-
 @pytest.mark.parametrize("num_rows", [50, 100, 500])
 @pytest.mark.parametrize("wave_type", ["sine", "cosine"])
 @pytest.mark.parametrize("amplitude", [-1, 1, 2.5])
