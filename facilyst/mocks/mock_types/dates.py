@@ -68,6 +68,9 @@ class Dates(MockBase):
         self.duplicates = duplicates
         self.chaos = int(chaos)
 
+        if self.num_rows < 3:
+            raise ValueError(f"Parameter `num_rows` must be 3 or above!")
+
         if not (self.duplicates or self.missing or self.misaligned):
             self.chaos = 0
 

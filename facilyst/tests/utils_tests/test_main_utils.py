@@ -1,6 +1,23 @@
 from unittest.mock import patch
 
-from facilyst.utils import make_dates, make_features, make_wave
+import pytest
+
+from facilyst.utils import create_data, make_dates, make_features, make_wave
+
+
+@pytest.mark.parametrize("mock_type", ["features", "dates", "wave"])
+@pytest.mark.parametrize("library", ["pandas", "numpy"])
+@patch("facilyst.mocks.mock_types.features.Features.get_data")
+@patch("facilyst.mocks.mock_types.dates.Dates.get_data")
+@patch("facilyst.mocks.mock_types.wave.Wave.get_data")
+def test_create_data(mock_wave, mock_dates, mock_features, mock_type, library):
+    mock_data = create_data(mock_type=mock_type, library=library)
+    if mock_type == "features":
+        mock_features.assert_called_once()
+    elif mock_type == "dates":
+        mock_dates.assert_called_once()
+    else:
+        mock_wave.assert_called_once()
 
 
 @patch("facilyst.utils.main_utils.create_data")

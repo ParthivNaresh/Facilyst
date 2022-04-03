@@ -7,9 +7,6 @@ class MockBase(ABC):
         self.num_rows = num_rows
         self.parameters = parameters
 
-        if self.num_rows < 3:
-            raise ValueError(f"Parameter `num_rows` must be 3 or above!")
-
     @property
     @abstractmethod
     def name(self):
