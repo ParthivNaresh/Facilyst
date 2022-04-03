@@ -26,8 +26,8 @@ class Dates(MockBase):
 
     def __init__(
         self,
-        library="pandas",
         num_rows=100,
+        library="pandas",
         start_date="1/1/2001",
         frequency="1D",
         missing=False,
@@ -35,19 +35,30 @@ class Dates(MockBase):
         duplicates=False,
         chaos=1,
     ):
-        """
-        :param library:
-        :param num_rows:
-        :param start_date:
-        :param periods:
-        :param frequency:
-        :param missing:
-        :param misaligned:
-        :param duplicates:
-        :param chaos: int: Determines what percentage of the date range will be modified to be uninferable. Set on a scale
+        """Class to manage mock data creation of datetime values.
+
+
+        :param num_rows: The number of observations in the final dataset. Defaults to 100.
+        :type num_rows: int, optional
+        :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'pandas'.
+        :type library: str, optional
+        :param start_date: The start date for the datetime values. Defaults to January 1, 2001.
+        :type start_date: str, optional
+        :param frequency: Frequency for the datetime values. Defaults to a frequency of 1 day.
+        :type frequency: str, optional
+        :param missing: Flag that determines if datetime values will be randomly removed. Defaults to False. Will be set to False if chaos is 0.
+        :type missing: bool, optional
+        :param misaligned: Flag that determines if datetime values will be randomly misaligned. Defaults to False. Will be set to False if chaos is 0.
+        :type misaligned: bool, optional
+        :param duplicates: Flag that determines if duplicate datetime values will be randomly added. Defaults to False. Will be set to False if chaos is 0.
+        :type duplicates: bool, optional
+        :param chaos: Determines what percentage of the date range will be modified to be uninferable. Set on a scale
         of 0 (no duplicate, missing, or misaligned values in the date range, resulting in an inferable frequency) to 10.
-        `num_rows` has to be set to a minimum of 30. If parameters `duplicates`, `missing`, and `misaligned` are all set
-        to False, then this parameter will be set to 0. Defaults to 1.
+        If parameters `duplicates`, `missing`, and `misaligned` are all set to False, then this parameter will be set to 0.
+        Defaults to 1.
+        :type chaos: int, optional
+        :return: Mock datetime data.
+        :rtype: pd.DateTimeIndex by default, can also return np.ndarray
         """
         self.num_rows = num_rows
         self.start_date = start_date
@@ -56,6 +67,9 @@ class Dates(MockBase):
         self.misaligned = misaligned
         self.duplicates = duplicates
         self.chaos = int(chaos)
+
+        if self.num_rows < 3:
+            raise ValueError("Parameter `num_rows` must be 3 or above!")
 
         if not (self.duplicates or self.missing or self.misaligned):
             self.chaos = 0
@@ -74,13 +88,13 @@ class Dates(MockBase):
         super().__init__(library, num_rows, parameters)
 
     def create_data(self):
-        dates_ = pd.date_range(
+        data = pd.date_range(
             start=self.start_date, periods=self.num_rows, freq=self.frequency
         )
         if self.chaos:
-            dates_ = self.make_uninferrable(dates_)
-        dates_ = self.handle_library(dates_)
-        return dates_
+            data = self.make_uninferrable(data)
+        data = self.handle_library(data)
+        return data
 
     def validate_num_rows(self):
         if self.chaos and (self.num_rows < 30):
@@ -164,14 +178,11 @@ class Dates(MockBase):
 
     def handle_library(self, dates_):
         """
-        Handles the library that was selected to determine the format in which the data will be returned, and then
-        returns the data based on the dtype specified during class instantiation.
+        Handles the library that was selected to determine the format in which the data will be returned.
 
         :return: The final data created from the appropriate library as a pd.DatetimeIndex or ndarray.
         """
-        dates_ = pd.DatetimeIndex(dates_)
-        if self.library.lower() == "pandas":
-            return dates_
-        elif self.library.lower() == "numpy":
+        if self.library.lower() == "numpy":
             return dates_.to_numpy()
-        return dates_
+        else:
+            return pd.DatetimeIndex(dates_)

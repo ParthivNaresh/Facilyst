@@ -5,27 +5,38 @@ import pytest
 from facilyst.mocks import Dates
 
 
-@pytest.mark.parametrize("num_rows", [29, 30])
-def test_warning(num_rows):
-    if num_rows < 30:
-        with pytest.raises(
-            ValueError,
-            match="The `num_rows` parameter must be a minimum of 30 if chaos is not 0.",
-        ):
-            dates_class = Dates(num_rows=num_rows, misaligned=True)
-    else:
-        dates_class = Dates(num_rows=num_rows, misaligned=True)
-        assert dates_class.chaos == 1
-
-
 @pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
 def test_library(library):
-    dates_class = Dates(library=library, misaligned=True)
+    dates_class = Dates(library=library)
     dates_data = dates_class.get_data()
     if library.lower() in ["pandas", "third_option"]:
         assert isinstance(dates_data, pd.DatetimeIndex)
     else:
         assert isinstance(dates_data, np.ndarray)
+
+
+@pytest.mark.parametrize("chaos", [0, 2])
+@pytest.mark.parametrize("misaligned", [True, False])
+@pytest.mark.parametrize("num_rows", [2, 29, 30])
+def test_warning(num_rows, misaligned, chaos):
+    if num_rows < 3:
+        with pytest.raises(
+            ValueError,
+            match="Parameter `num_rows` must be 3 or above!",
+        ):
+            dates_class = Dates(num_rows=num_rows, misaligned=misaligned, chaos=chaos)
+    elif misaligned and chaos != 0 and num_rows < 30:
+        with pytest.raises(
+            ValueError,
+            match="The `num_rows` parameter must be a minimum of 30 if chaos is not 0.",
+        ):
+            dates_class = Dates(num_rows=num_rows, misaligned=misaligned, chaos=chaos)
+    else:
+        dates_class = Dates(num_rows=num_rows, misaligned=misaligned, chaos=chaos)
+        if misaligned:
+            assert dates_class.chaos == chaos
+        else:
+            assert dates_class.chaos == 0
 
 
 def test_dates_default():

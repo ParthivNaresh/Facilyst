@@ -1,20 +1,24 @@
 import pytest
 
-from facilyst.mocks.mock_types import handle_data_and_library_type
+from facilyst.mocks.mock_types import handle_mock_and_library_type
 
 
 @pytest.mark.parametrize(
-    "data_type",
-    ["DataFrame", "features", "series", "Target", "X", "y", "some_features"],
+    "mock_type",
+    ["DataFrame", "features", "X", "some_features", "WAVES", "wave", "dates", "DATE"],
 )
 @pytest.mark.parametrize("library", ["PANDAS", "Numpy", "pd", "nP", "paddy_cake"])
-def test_handle_data_and_library_type(data_type, library):
-    data_type_, library_ = handle_data_and_library_type(data_type, library)
-    if data_type.lower() in ["dataframe", "features", "x", "some_features"]:
-        assert data_type_ == "features"
-    else:
-        assert data_type_ == "target"
+def test_handle_mock_and_library_type(mock_type, library):
+    handled_mock_type, handled_library = handle_mock_and_library_type(
+        mock_type, library
+    )
+    if mock_type.lower() in ["dataframe", "features", "x", "some_features"]:
+        assert handled_mock_type == "features"
+    elif mock_type.lower() in ["WAVES", "wave"]:
+        assert handled_mock_type == "wave"
+    elif mock_type.lower() in ["dates", "DATE"]:
+        assert handled_mock_type == "dates"
     if library.lower() in ["pandas", "pd", "paddy_cake"]:
-        assert library_ == "pandas"
+        assert handled_library == "pandas"
     else:
-        assert library_ == "numpy"
+        assert handled_library == "numpy"

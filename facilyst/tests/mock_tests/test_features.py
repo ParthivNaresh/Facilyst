@@ -1,7 +1,18 @@
 import numpy as np
+import pandas as pd
 import pytest
 
 from facilyst.mocks import Features
+
+
+@pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
+def test_library(library):
+    features_class = Features(library=library)
+    features_data = features_class.get_data()
+    if library.lower() in ["pandas", "third_option"]:
+        assert isinstance(features_data, pd.DataFrame)
+    else:
+        assert isinstance(features_data, np.ndarray)
 
 
 def test_features_default():

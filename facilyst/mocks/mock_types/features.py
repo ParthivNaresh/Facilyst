@@ -1,7 +1,7 @@
 import pandas as pd
 
 from facilyst.mocks import MockBase
-from facilyst.mocks.mock_types.utils import mock_dtypes
+from facilyst.mocks.mock_types.utils import mock_features_dtypes
 
 
 class Features(MockBase):
@@ -10,8 +10,8 @@ class Features(MockBase):
 
     def __init__(
         self,
-        library="pandas",
         num_rows=100,
+        library="pandas",
         ints=True,
         rand_ints=True,
         floats=True,
@@ -24,21 +24,36 @@ class Features(MockBase):
         floats_with_na=False,
         all_dtypes=False,
     ):
-        """
+        """Class to manage mock data creation of features.
 
-        :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'pandas'.
         :param num_rows: The number of observations in the final dataset. Defaults to 100.
+        :type num_rows: int, optional
+        :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'pandas'.
+        :type library: str, optional
         :param ints: Flag that includes column with monotonically increasing incremental set of negative and positive integers. Defaults to True.
+        :type ints: bool, optional
         :param rand_ints: Flag that includes column with randomly selected integers between -5 and 5. Defaults to True.
+        :type rand_ints: bool, optional
         :param floats: Flag that includes column which is the float version of the 'ints' column. Defaults to True.
+        :type floats: bool, optional
         :param rand_floats: Flag that includes column with randomly selected floats between -5 and 5. Defaults to True.
+        :type rand_floats: bool, optional
         :param booleans: Flag that includes column with randomly selected boolean values. Defaults to False.
+        :type booleans: bool, optional
         :param categoricals: Flag that includes column with four categoriesL 'First', 'Second', 'Third', and 'Fourth'. Defaults to False.
+        :type categoricals: bool, optional
         :param dates: Flag that includes column with monotonically increasing dates from 01/01/2001 with a daily frequency. Defaults to False.
+        :type dates: bool, optional
         :param texts: Flag that includes column with different text on each line. Defaults to False.
+        :type texts: bool, optional
         :param ints_with_na: Flag that includes column which is the same as the 'ints' column with pd.NA included. Defaults to False.
+        :type ints_with_na: bool, optional
         :param floats_with_na: Flag that includes column which is the same as the 'floats' column with pd.NA included. Defaults to False.
+        :type floats_with_na: bool, optional
         :param all_dtypes: Flag that includes all columns. Defaults to False.
+        :type all_dtypes: bool, optional
+        :return: Mock features data.
+        :rtype: pd.DataFrame by default, can also return np.ndarray
         """
         kw_args = locals()
 
@@ -62,13 +77,13 @@ class Features(MockBase):
         super().__init__(library, num_rows, parameters)
 
     def create_data(self):
-        final_output = self.handle_library()
-        return final_output
+        data, dtypes_to_keep = self.get_data_from_dict()
+        data = self.handle_library(data, dtypes_to_keep)
+        return data
 
-    def handle_library(self):
+    def get_data_from_dict(self):
         """
-        Handles the library that was selected to determine the format in which the data will be returned, and then
-        returns the data based on the dtypes specified during class instantiation.
+        Returns the data based on the dtypes specified during class instantiation.
 
         :return: The final data created from the appropriate library as a pd.DataFrame or ndarray.
         """
@@ -76,19 +91,22 @@ class Features(MockBase):
         mocked = Features._refine_dtypes(dtypes_to_keep, self.num_rows)
 
         mocked_df = pd.DataFrame.from_dict(mocked)
+        return mocked_df, dtypes_to_keep
 
-        if self.library == "pandas":
+    def handle_library(self, data, dtypes_to_keep):
+        """
+        Handles the library that was selected to determine the format in which the data will be returned.
+
+        :return: The final data created from the appropriate library as a pd.DataFrame or ndarray.
+        """
+        if self.library == "numpy":
+            return data.to_numpy()
+        else:
             if "ints_with_na" in dtypes_to_keep:
-                mocked_df["ints_with_na"] = mocked_df["ints_with_na"].astype("Int64")
+                data["ints_with_na"] = data["ints_with_na"].astype("Int64")
             if "floats_with_na" in dtypes_to_keep:
-                mocked_df["floats_with_na"] = mocked_df["floats_with_na"].astype(
-                    "Float64"
-                )
-            return mocked_df
-        elif self.library == "numpy":
-            return mocked_df.to_numpy()
-
-        return mocked_df
+                data["floats_with_na"] = data["floats_with_na"].astype("Float64")
+            return data
 
     @staticmethod
     def _refine_dtypes(dtypes, num_rows=100):
@@ -99,5 +117,5 @@ class Features(MockBase):
         :param num_rows : The number of observations in the final dataset. Defaults to 100.
         :return: A refined form of the full set of columns available.
         """
-        full_mock = mock_dtypes(num_rows)
+        full_mock = mock_features_dtypes(num_rows)
         return {k: v for k, v in full_mock.items() if k in dtypes}

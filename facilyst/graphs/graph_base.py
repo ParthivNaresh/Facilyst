@@ -75,7 +75,7 @@ class GraphBase(ABC):
             and isinstance(y_, collections.abc.Hashable)
         ):
             raise ValueError(
-                "If `dataset` is not None, then `x` and `y` need to be hashable values referring to column names in dataset!"
+                "If `dataset` is not None, then `x` and `y` need to be hashable values referring to column names in the dataset!"
             )
         elif x_ is None or y_ is None:
             raise ValueError("`x` and `y` cannot be None!")
