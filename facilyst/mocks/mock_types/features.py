@@ -105,9 +105,7 @@ class Features(MockBase):
             if "ints_with_na" in dtypes_to_keep:
                 data["ints_with_na"] = data["ints_with_na"].astype("Int64")
             if "floats_with_na" in dtypes_to_keep:
-                data["floats_with_na"] = data["floats_with_na"].astype(
-                    "Float64"
-                )
+                data["floats_with_na"] = data["floats_with_na"].astype("Float64")
             return data
 
     @staticmethod
