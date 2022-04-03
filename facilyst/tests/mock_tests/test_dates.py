@@ -20,7 +20,7 @@ def test_warning(num_rows):
 
 @pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
 def test_library(library):
-    dates_class = Dates(library=library, misaligned=True)
+    dates_class = Dates(library=library)
     dates_data = dates_class.get_data()
     if library.lower() in ["pandas", "third_option"]:
         assert isinstance(dates_data, pd.DatetimeIndex)

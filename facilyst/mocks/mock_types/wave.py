@@ -10,21 +10,53 @@ class Wave(MockBase):
 
     def __init__(
         self,
-        library="numpy",
         num_rows=100,
+        library="numpy",
         wave_type="sine",
         amplitude=1,
         frequency=1,
         random_amplitudes=False,
         random_frequency=False,
-        trend=None,
+        trend=0,
     ):
+        """Class to manage mock data creation of a wave.
+
+        :param num_rows: The number of observations in the final dataset. Defaults to 100.
+        :type num_rows: int, optional
+        :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'numpy'.
+        :type library: str, optional
+        :param wave_type: The function off of which the wave will be based. Options are `sine` and `cosine`. Defaults to `sine`.
+        :type wave_type: str, optional
+        :param amplitude: The amplitude (height) of the wave. Defaults to 1.
+        :type amplitude: int, optional
+        :param frequency: The frequency (thickness) of the wave. Defaults to 1.
+        :type frequency: int, optional
+        :param random_amplitudes: Flag that determines if different sections of the wave will have different amplitudes. Defaults to False.
+        :type random_amplitudes: bool, optional
+        :param random_frequency: Flag that determines if different sections of the wave will have different frequencies. Defaults to False.
+        :type random_frequency: bool, optional
+        :param trend: Determines what sort of trend the wave will have. Higher positive values will result in a larger upwards trend, and vice verse.
+        Defaults to 0, which is no trend.
+        :type trend: float, optional
+        :return: Mock wave data.
+        :rtype: np.ndarray by default, can also return pd.DataFrame
+        """
         if wave_type.lower() in ["sin", "sine"]:
             wave_type = "sine"
         elif wave_type.lower() in ["cos", "cosine"]:
             wave_type = "cosine"
         else:
-            wave_type = "sine"
+            raise ValueError(f"Parameter `wave_type` must be either `sin` or `cos`!")
+
+        if amplitude == 0:
+            raise ValueError("Parameter `amplitude` cannot be 0!")
+        if not frequency > 0:
+            raise ValueError("Parameter `frequency` must be above 0!")
+        if not isinstance(frequency, int) and (random_frequency or random_amplitudes):
+            raise ValueError(
+                "Parameter `frequency` must be an integer if either `random_amplitudes` or `random_frequency` have been set to True."
+            )
+
         self.wave_type = wave_type
         self.amplitude = amplitude
         self.frequency = frequency
@@ -45,6 +77,8 @@ class Wave(MockBase):
 
     def create_data(self):
         data = self.generate_wave()
+        if self.trend != 0:
+            data = self.add_trend(data)
         data = self.handle_library(data)
         return data
 
@@ -67,6 +101,7 @@ class Wave(MockBase):
                 split_indices.append((start, end))
                 start = end
             split_signals = []
+            amplitude_sign = np.random.choice(["positive", "negative"], 1)[0]
             for interval in split_indices:
                 samples = np.arange(interval[1] - interval[0]) / (
                     interval[1] - interval[0]
@@ -74,12 +109,17 @@ class Wave(MockBase):
                 amplitude = (
                     self.amplitude
                     if not self.random_amplitudes
-                    else np.random.choice([1, 2, 3], 1)[0]
+                    else np.random.uniform(1, 10)
                 )
+                # Ensures that the final wave doesn't abruptly change direction
+                amplitude = (
+                    -1 * amplitude if amplitude_sign == "negative" else amplitude
+                )
+                # Only 1 wave per split is required
                 frequency = (
                     1
                     if not self.random_frequency
-                    else np.random.choice([1, 2, 3], 1)[0]
+                    else np.random.choice(np.arange(1, 5), 1)[0]
                 )
                 if self.wave_type == "sine":
                     signal = amplitude * np.sin(2 * np.pi * frequency * samples)
@@ -89,6 +129,15 @@ class Wave(MockBase):
             signal = split_signals
         return signal
 
+    def add_trend(self, signal):
+        trend_line = np.arange(
+            0, np.abs(self.trend), np.abs(self.trend) / self.num_rows
+        )
+        if len(trend_line) != len(signal):
+            trend_line = trend_line[: len(signal)]
+        signal = signal + trend_line if self.trend > 0 else signal - trend_line
+        return signal
+
     def handle_library(self, data):
         """
         Handles the library that was selected to determine the format in which the data will be returned, and then
@@ -96,8 +145,7 @@ class Wave(MockBase):
 
         :return: The final data created from the appropriate library as a pd.Series or ndarray.
         """
-        if self.library.lower() == "pandas":
-            return pd.Series(data)
-        elif self.library.lower() == "numpy":
+        if self.library.lower() == "numpy":
             return data
-        return data
+        else:
+            return pd.Series(data)

@@ -2,13 +2,15 @@ import numpy as np
 import pandas as pd
 
 
-def handle_data_and_library_type(data_type="features", library="pandas"):
-    if data_type.lower() in ["df", "dataframe", "features", "x"]:
-        data_type_ = "features"
-    elif data_type.lower() in ["series", "target", "label", "y"]:
-        data_type_ = "target"
+def handle_mock_and_library_type(mock_type="features", library="pandas"):
+    if mock_type.lower() in ["df", "dataframe", "features", "x"]:
+        mock_type_ = "features"
+    elif mock_type.lower() in ["dates", "date"]:
+        mock_type_ = "dates"
+    elif mock_type.lower() in ["waves", "wave", "sine", "sin", "cosine", "cos"]:
+        mock_type_ = "wave"
     else:
-        data_type_ = "features"
+        mock_type_ = "features"
 
     if library.lower() in ["pd", "pandas", "df", "dataframe", "series"]:
         library_ = "pandas"
@@ -17,7 +19,7 @@ def handle_data_and_library_type(data_type="features", library="pandas"):
     else:
         library_ = "pandas"
 
-    return data_type_, library_
+    return mock_type_, library_
 
 
 def mock_dtypes(num_rows=100):

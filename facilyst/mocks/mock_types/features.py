@@ -10,8 +10,8 @@ class Features(MockBase):
 
     def __init__(
         self,
-        library="pandas",
         num_rows=100,
+        library="pandas",
         ints=True,
         rand_ints=True,
         floats=True,
@@ -24,21 +24,36 @@ class Features(MockBase):
         floats_with_na=False,
         all_dtypes=False,
     ):
-        """
+        """Class to manage mock data creation of features.
 
-        :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'pandas'.
         :param num_rows: The number of observations in the final dataset. Defaults to 100.
+        :type num_rows: int, optional
+        :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'pandas'.
+        :type library: str, optional
         :param ints: Flag that includes column with monotonically increasing incremental set of negative and positive integers. Defaults to True.
+        :type ints: bool, optional
         :param rand_ints: Flag that includes column with randomly selected integers between -5 and 5. Defaults to True.
+        :type rand_ints: bool, optional
         :param floats: Flag that includes column which is the float version of the 'ints' column. Defaults to True.
+        :type floats: bool, optional
         :param rand_floats: Flag that includes column with randomly selected floats between -5 and 5. Defaults to True.
+        :type rand_floats: bool, optional
         :param booleans: Flag that includes column with randomly selected boolean values. Defaults to False.
+        :type booleans: bool, optional
         :param categoricals: Flag that includes column with four categoriesL 'First', 'Second', 'Third', and 'Fourth'. Defaults to False.
+        :type categoricals: bool, optional
         :param dates: Flag that includes column with monotonically increasing dates from 01/01/2001 with a daily frequency. Defaults to False.
+        :type dates: bool, optional
         :param texts: Flag that includes column with different text on each line. Defaults to False.
+        :type texts: bool, optional
         :param ints_with_na: Flag that includes column which is the same as the 'ints' column with pd.NA included. Defaults to False.
+        :type ints_with_na: bool, optional
         :param floats_with_na: Flag that includes column which is the same as the 'floats' column with pd.NA included. Defaults to False.
+        :type floats_with_na: bool, optional
         :param all_dtypes: Flag that includes all columns. Defaults to False.
+        :type all_dtypes: bool, optional
+        :return: Mock features data.
+        :rtype: pd.DataFrame by default, can also return np.ndarray
         """
         kw_args = locals()
 
@@ -77,7 +92,9 @@ class Features(MockBase):
 
         mocked_df = pd.DataFrame.from_dict(mocked)
 
-        if self.library == "pandas":
+        if self.library == "numpy":
+            return mocked_df.to_numpy()
+        else:
             if "ints_with_na" in dtypes_to_keep:
                 mocked_df["ints_with_na"] = mocked_df["ints_with_na"].astype("Int64")
             if "floats_with_na" in dtypes_to_keep:
@@ -85,10 +102,6 @@ class Features(MockBase):
                     "Float64"
                 )
             return mocked_df
-        elif self.library == "numpy":
-            return mocked_df.to_numpy()
-
-        return mocked_df
 
     @staticmethod
     def _refine_dtypes(dtypes, num_rows=100):
