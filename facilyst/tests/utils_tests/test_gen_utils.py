@@ -1,7 +1,6 @@
 from facilyst.graphs import GraphBase, Line, Scatter
-from facilyst.mocks import MockBase, Features, Dates, Wave
+from facilyst.mocks import Dates, Features, MockBase, Wave
 from facilyst.utils import _get_subclasses
-
 
 expected_mock_subclasses = [
     Wave,

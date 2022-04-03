@@ -43,7 +43,7 @@ def test_warnings_with_dataset(
     elif x_type not in ["str", "None"] or y_type not in ["str", "None"]:
         with pytest.raises(
             ValueError,
-            match="If `dataset` is not None, then `x` and `y` need to be hashable values referring to column names in dataset!",
+            match="If `dataset` is not None, then `x` and `y` need to be hashable values referring to column names in the dataset!",
         ):
             _ = Scatter(
                 dataset=multi_dim_data[dataset_type],
