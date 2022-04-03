@@ -5,6 +5,16 @@ import pytest
 from facilyst.mocks import Wave
 
 
+@pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
+def test_library(library):
+    wave_class = Wave(library=library)
+    wave_data = wave_class.get_data()
+    if library.lower() in ["pandas", "third_option"]:
+        assert isinstance(wave_data, pd.Series)
+    else:
+        assert isinstance(wave_data, np.ndarray)
+
+
 @pytest.mark.parametrize("wave_type", ["Sine", "sin", "Cosine", "cos", "cosin"])
 def test_wave_type(wave_type):
     if wave_type.lower() not in ["sine", "sin", "cosine", "cos"]:
@@ -49,16 +59,6 @@ def test_frequency(random_amplitudes, random_frequency, frequency):
                 random_frequency=random_frequency,
                 random_amplitudes=random_amplitudes,
             )
-
-
-@pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
-def test_library(library):
-    wave_class = Wave(library=library)
-    wave_data = wave_class.get_data()
-    if library.lower() in ["pandas", "third_option"]:
-        assert isinstance(wave_data, pd.Series)
-    else:
-        assert isinstance(wave_data, np.ndarray)
 
 
 def test_wave_default():

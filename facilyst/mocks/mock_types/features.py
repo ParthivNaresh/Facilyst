@@ -77,13 +77,13 @@ class Features(MockBase):
         super().__init__(library, num_rows, parameters)
 
     def create_data(self):
-        final_output = self.handle_library()
-        return final_output
+        data, dtypes_to_keep = self.get_data_from_dict()
+        data = self.handle_library(data, dtypes_to_keep)
+        return data
 
-    def handle_library(self):
+    def get_data_from_dict(self):
         """
-        Handles the library that was selected to determine the format in which the data will be returned, and then
-        returns the data based on the dtypes specified during class instantiation.
+        Returns the data based on the dtypes specified during class instantiation.
 
         :return: The final data created from the appropriate library as a pd.DataFrame or ndarray.
         """
@@ -91,17 +91,24 @@ class Features(MockBase):
         mocked = Features._refine_dtypes(dtypes_to_keep, self.num_rows)
 
         mocked_df = pd.DataFrame.from_dict(mocked)
+        return mocked_df, dtypes_to_keep
 
+    def handle_library(self, data, dtypes_to_keep):
+        """
+        Handles the library that was selected to determine the format in which the data will be returned.
+
+        :return: The final data created from the appropriate library as a pd.DataFrame or ndarray.
+        """
         if self.library == "numpy":
-            return mocked_df.to_numpy()
+            return data.to_numpy()
         else:
             if "ints_with_na" in dtypes_to_keep:
-                mocked_df["ints_with_na"] = mocked_df["ints_with_na"].astype("Int64")
+                data["ints_with_na"] = data["ints_with_na"].astype("Int64")
             if "floats_with_na" in dtypes_to_keep:
-                mocked_df["floats_with_na"] = mocked_df["floats_with_na"].astype(
+                data["floats_with_na"] = data["floats_with_na"].astype(
                     "Float64"
                 )
-            return mocked_df
+            return data
 
     @staticmethod
     def _refine_dtypes(dtypes, num_rows=100):

@@ -140,8 +140,7 @@ class Wave(MockBase):
 
     def handle_library(self, data):
         """
-        Handles the library that was selected to determine the format in which the data will be returned, and then
-        returns the data based on the dtype specified during class instantiation.
+        Handles the library that was selected to determine the format in which the data will be returned.
 
         :return: The final data created from the appropriate library as a pd.Series or ndarray.
         """

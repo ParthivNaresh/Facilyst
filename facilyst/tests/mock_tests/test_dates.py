@@ -5,6 +5,16 @@ import pytest
 from facilyst.mocks import Dates
 
 
+@pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
+def test_library(library):
+    dates_class = Dates(library=library)
+    dates_data = dates_class.get_data()
+    if library.lower() in ["pandas", "third_option"]:
+        assert isinstance(dates_data, pd.DatetimeIndex)
+    else:
+        assert isinstance(dates_data, np.ndarray)
+
+
 @pytest.mark.parametrize("chaos", [0, 2])
 @pytest.mark.parametrize("misaligned", [True, False])
 @pytest.mark.parametrize("num_rows", [2, 29, 30])
@@ -27,16 +37,6 @@ def test_warning(num_rows, misaligned, chaos):
             assert dates_class.chaos == chaos
         else:
             assert dates_class.chaos == 0
-
-
-@pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
-def test_library(library):
-    dates_class = Dates(library=library)
-    dates_data = dates_class.get_data()
-    if library.lower() in ["pandas", "third_option"]:
-        assert isinstance(dates_data, pd.DatetimeIndex)
-    else:
-        assert isinstance(dates_data, np.ndarray)
 
 
 def test_dates_default():

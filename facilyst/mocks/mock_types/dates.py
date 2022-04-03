@@ -88,13 +88,13 @@ class Dates(MockBase):
         super().__init__(library, num_rows, parameters)
 
     def create_data(self):
-        dates_ = pd.date_range(
+        data = pd.date_range(
             start=self.start_date, periods=self.num_rows, freq=self.frequency
         )
         if self.chaos:
-            dates_ = self.make_uninferrable(dates_)
-        dates_ = self.handle_library(dates_)
-        return dates_
+            data = self.make_uninferrable(data)
+        data = self.handle_library(data)
+        return data
 
     def validate_num_rows(self):
         if self.chaos and (self.num_rows < 30):
@@ -178,8 +178,7 @@ class Dates(MockBase):
 
     def handle_library(self, dates_):
         """
-        Handles the library that was selected to determine the format in which the data will be returned, and then
-        returns the data based on the dtype specified during class instantiation.
+        Handles the library that was selected to determine the format in which the data will be returned.
 
         :return: The final data created from the appropriate library as a pd.DatetimeIndex or ndarray.
         """
