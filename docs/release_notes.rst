@@ -3,6 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
+        * Added ``Woodwork`` initialization for ``Features`` mock data :pr:`5`
         * Added ``Wave`` mock type :pr:`4`
         * Added convenience functions ``make_features``, ``make_dates``, and ``make_wave`` for making ``Features``, ``Dates``, and ``Wave`` mock types respectively :pr:`4`
         * Added ``Features``, ``Target``, and ``Dates`` mock types :pr:`3`

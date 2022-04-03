@@ -43,8 +43,9 @@ def make_features(
     categoricals=False,
     dates=False,
     texts=False,
-    ints_with_na=False,
-    floats_with_na=False,
+    ints_nullable=False,
+    floats_nullable=False,
+    booleans_nullable=False,
     all_dtypes=False,
 ):
     """Convenience function that allows for the creation of mock features data.
@@ -70,10 +71,12 @@ def make_features(
     :type dates: bool, optional
     :param texts: Flag that includes column with different text on each line. Defaults to False.
     :type texts: bool, optional
-    :param ints_with_na: Flag that includes column which is the same as the 'ints' column with pd.NA included. Defaults to False.
-    :type ints_with_na: bool, optional
-    :param floats_with_na: Flag that includes column which is the same as the 'floats' column with pd.NA included. Defaults to False.
-    :type floats_with_na: bool, optional
+    :param ints_nullable: Flag that includes column which is the same as the 'ints' column with pd.NA included. Defaults to False.
+    :type ints_nullable: bool, optional
+    :param floats_nullable: Flag that includes column which is the same as the 'floats' column with pd.NA included. Defaults to False.
+    :type floats_nullable: bool, optional
+    :param booleans_nullable: Flag that includes column which is a randomly selected column with boolean values and pd.NA included. Defaults to False.
+    :type booleans_nullable: bool, optional
     :param all_dtypes: Flag that includes all columns. Defaults to False.
     :type all_dtypes: bool, optional
     :return: Mock features data.

@@ -36,14 +36,14 @@ def test_features_default():
 @pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
 @pytest.mark.parametrize("num_rows", [10, 100, 300, 1000, 10000])
 @pytest.mark.parametrize(
-    "ints, rand_ints, floats, rand_floats, booleans, categoricals, dates, texts, ints_with_na, floats_with_na",
+    "ints, rand_ints, floats, rand_floats, booleans, categoricals, dates, texts, ints_nullable, floats_nullable, booleans_nullable",
     [
-        [True, True, True, True, True, True, True, True, True, True],
-        [False, False, False, False, False, False, False, False, False, False],
-        [True, True, True, True, False, False, False, False, False, False],
-        [False, False, False, False, True, True, True, True, True, True],
-        [False, False, False, False, False, False, False, False, True, True],
-        [False, False, False, False, False, False, True, True, False, False],
+        [True, True, True, True, True, True, True, True, True, True, True],
+        [False, False, False, False, False, False, False, False, False, False, False],
+        [True, True, True, True, False, False, False, False, False, False, False],
+        [False, False, False, False, True, True, True, True, True, True, True],
+        [False, False, False, False, False, False, False, False, True, True, True],
+        [False, False, False, False, False, False, True, True, False, False, False],
     ],
 )
 def test_features_parameters(
@@ -57,8 +57,9 @@ def test_features_parameters(
     categoricals,
     dates,
     texts,
-    ints_with_na,
-    floats_with_na,
+    ints_nullable,
+    floats_nullable,
+    booleans_nullable,
 ):
     kw_args = locals()
     features_class = Features(**kw_args)
@@ -68,7 +69,7 @@ def test_features_parameters(
         k: v for k, v in kw_args.items() if k not in ["library", "num_rows"]
     }
     features_included = {k: v for k, v in all_features.items() if v}
-    num_columns = len(features_included) if features_included else 10
+    num_columns = len(features_included) if features_included else 11
 
     if library.lower() in ["pandas", "third_option"]:
         assert np.array_equal(
@@ -82,10 +83,69 @@ def test_features_parameters(
             ),
         )
     assert features.shape == (num_rows, num_columns)
+    if (
+        isinstance(features, pd.DataFrame)
+        and len(features_included) == 11
+        and num_rows != 10
+    ):
+        assert (
+            len(
+                features.ww.select(
+                    include=["Integer"], return_schema=True
+                ).logical_types
+            )
+            == 2
+        )
+        assert (
+            len(
+                features.ww.select(include=["Double"], return_schema=True).logical_types
+            )
+            == 3
+        )
+        assert (
+            len(
+                features.ww.select(
+                    include=["Boolean"], return_schema=True
+                ).logical_types
+            )
+            == 1
+        )
+        assert (
+            len(
+                features.ww.select(
+                    include=["Categorical"], return_schema=True
+                ).logical_types
+            )
+            == 2
+        )
+        assert (
+            len(
+                features.ww.select(
+                    include=["Datetime"], return_schema=True
+                ).logical_types
+            )
+            == 1
+        )
+        assert (
+            len(
+                features.ww.select(
+                    include=["NaturalLanguage"], return_schema=True
+                ).logical_types
+            )
+            == 1
+        )
+        assert (
+            len(
+                features.ww.select(
+                    include=["IntegerNullable"], return_schema=True
+                ).logical_types
+            )
+            == 1
+        )
 
 
 def test_all_dtypes():
     features_class = Features(all_dtypes=True)
     features = features_class.get_data()
 
-    assert features.shape == (100, 10)
+    assert features.shape == (100, 11)

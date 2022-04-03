@@ -23,7 +23,7 @@ def test_create_data(mock_wave, mock_dates, mock_features, mock_type, library):
 @patch("facilyst.utils.main_utils.create_data")
 def test_make_features(mock_create_data):
     mock_features = make_features(
-        num_rows=1000, library="numpy", booleans=True, floats_with_na=True
+        num_rows=1000, library="numpy", booleans=True, floats_nullable=True
     )
     mock_create_data.assert_called_once_with(
         "features",
@@ -37,8 +37,9 @@ def test_make_features(mock_create_data):
         categoricals=False,
         dates=False,
         texts=False,
-        ints_with_na=False,
-        floats_with_na=True,
+        ints_nullable=False,
+        floats_nullable=True,
+        booleans_nullable=False,
         all_dtypes=False,
     )
 

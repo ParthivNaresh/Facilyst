@@ -43,11 +43,12 @@ def mock_features_dtypes(num_rows=100):
             f"My children are miserable failures, all {i} of them!"
             for i in range(num_rows)
         ],
-        "ints_with_na": np.random.choice(
+        "ints_nullable": np.random.choice(
             [i for i in range(-10 // 2, 10 // 2)] + [pd.NA], num_rows
         ),
-        "floats_with_na": np.random.choice(
+        "floats_nullable": np.random.choice(
             np.append([float(i) for i in range(-5, 5)], pd.NA), num_rows
         ),
+        "booleans_nullable": np.random.choice([True, False, None], num_rows),
     }
     return dtypes_dict
