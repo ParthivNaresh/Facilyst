@@ -3,20 +3,30 @@ from facilyst.mocks.mock_types import handle_mock_and_library_type
 
 
 def create_data(
-    mock_type=None,
+    mock_type,
     num_rows=100,
     library="pandas",
+    **kwargs,
 ):
-    """ """
-    kw_args = locals()
+    """Function that creates data based on the mock_type requested.
+
+    :param mock_type: The mock data type to create.
+    :type mock_type: str
+    :param num_rows: The number of observations in the final dataset. Defaults to 100.
+    :type num_rows: int, optional
+    :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'pandas'.
+    :type library: str, optional
+    :param kwargs: Additional key word arguments passed depending on the type of mock data requested.
+    """
     mock_type, library = handle_mock_and_library_type(mock_type, library)
 
     class_options = {"features": Features, "dates": Dates, "wave": Wave}
 
-    all_kw_args = {k: v for k, v in kw_args.items() if k not in ["data_type"]}
-    all_kw_args["library"] = library
-
-    class_args = {k: v for k, v in all_kw_args.items()}
+    class_args = {
+        "num_rows": num_rows,
+        "library": library,
+    }
+    class_args.update(kwargs)
 
     data_class = class_options[mock_type](**class_args)
     return data_class.get_data()

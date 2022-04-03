@@ -22,7 +22,7 @@ def handle_mock_and_library_type(mock_type="features", library="pandas"):
     return mock_type_, library_
 
 
-def mock_dtypes(num_rows=100):
+def mock_features_dtypes(num_rows=100):
     """
     Internal function that returns the default full dataset.
 

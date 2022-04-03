@@ -1,7 +1,7 @@
 import pandas as pd
 
 from facilyst.mocks import MockBase
-from facilyst.mocks.mock_types.utils import mock_dtypes
+from facilyst.mocks.mock_types.utils import mock_features_dtypes
 
 
 class Features(MockBase):
@@ -112,5 +112,5 @@ class Features(MockBase):
         :param num_rows : The number of observations in the final dataset. Defaults to 100.
         :return: A refined form of the full set of columns available.
         """
-        full_mock = mock_dtypes(num_rows)
+        full_mock = mock_features_dtypes(num_rows)
         return {k: v for k, v in full_mock.items() if k in dtypes}
