@@ -34,16 +34,15 @@ def test_features_default():
 
 
 @pytest.mark.parametrize("library", ["Pandas", "numpy", "third_option"])
-@pytest.mark.parametrize("num_rows", [10, 100, 300, 1000, 10000])
+@pytest.mark.parametrize("num_rows", [10, 100, 300, 1000, 5000])
 @pytest.mark.parametrize(
-    "ints, rand_ints, floats, rand_floats, booleans, categoricals, dates, texts, ints_nullable, floats_nullable, booleans_nullable",
+    "ints, rand_ints, floats, rand_floats, booleans, categoricals, dates, texts, ints_nullable, floats_nullable, booleans_nullable, "
+    "full_names, phone_numbers, addresses, countries, email_addresses, urls, currencies, file_paths, ipv4, ipv6, lat_longs",
     [
-        [True, True, True, True, True, True, True, True, True, True, True],
-        [False, False, False, False, False, False, False, False, False, False, False],
-        [True, True, True, True, False, False, False, False, False, False, False],
-        [False, False, False, False, True, True, True, True, True, True, True],
-        [False, False, False, False, False, False, False, False, True, True, True],
-        [False, False, False, False, False, False, True, True, False, False, False],
+        [True] * 22,
+        [False] * 22,
+        [True] * 4 + [False] * 18,
+        [False] * 4 + [True] * 18,
     ],
 )
 def test_features_parameters(
@@ -60,6 +59,17 @@ def test_features_parameters(
     ints_nullable,
     floats_nullable,
     booleans_nullable,
+    full_names,
+    phone_numbers,
+    addresses,
+    countries,
+    email_addresses,
+    urls,
+    currencies,
+    file_paths,
+    ipv4,
+    ipv6,
+    lat_longs,
 ):
     kw_args = locals()
     features_class = Features(**kw_args)
@@ -69,7 +79,7 @@ def test_features_parameters(
         k: v for k, v in kw_args.items() if k not in ["library", "num_rows"]
     }
     features_included = {k: v for k, v in all_features.items() if v}
-    num_columns = len(features_included) if features_included else 11
+    num_columns = len(features_included) if features_included else 22
 
     if library.lower() in ["pandas", "third_option"]:
         assert np.array_equal(
@@ -85,9 +95,10 @@ def test_features_parameters(
     assert features.shape == (num_rows, num_columns)
     if (
         isinstance(features, pd.DataFrame)
-        and len(features_included) == 11
+        and len(features_included) == 22
         and num_rows != 10
     ):
+        print(features.ww)
         assert (
             len(
                 features.ww.select(
@@ -110,14 +121,24 @@ def test_features_parameters(
             )
             == 1
         )
-        assert (
-            len(
-                features.ww.select(
-                    include=["Categorical"], return_schema=True
-                ).logical_types
+        if num_rows == 5000:
+            assert (
+                len(
+                    features.ww.select(
+                        include=["Categorical"], return_schema=True
+                    ).logical_types
+                )
+                == 3
             )
-            == 2
-        )
+        else:
+            assert (
+                len(
+                    features.ww.select(
+                        include=["Categorical"], return_schema=True
+                    ).logical_types
+                )
+                == 2
+            )
         assert (
             len(
                 features.ww.select(
@@ -148,4 +169,4 @@ def test_all_dtypes():
     features_class = Features(all_dtypes=True)
     features = features_class.get_data()
 
-    assert features.shape == (100, 11)
+    assert features.shape == (100, 22)

@@ -40,6 +40,17 @@ def test_make_features(mock_create_data):
         ints_nullable=False,
         floats_nullable=True,
         booleans_nullable=False,
+        full_names=False,
+        phone_numbers=False,
+        addresses=False,
+        countries=False,
+        email_addresses=False,
+        urls=False,
+        currencies=False,
+        file_paths=False,
+        ipv4=False,
+        ipv6=False,
+        lat_longs=False,
         all_dtypes=False,
     )
 
