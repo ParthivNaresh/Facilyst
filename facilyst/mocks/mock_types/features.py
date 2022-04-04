@@ -20,8 +20,20 @@ class Features(MockBase):
         categoricals=False,
         dates=False,
         texts=False,
-        ints_with_na=False,
-        floats_with_na=False,
+        ints_nullable=False,
+        floats_nullable=False,
+        booleans_nullable=False,
+        full_names=False,
+        phone_numbers=False,
+        addresses=False,
+        countries=False,
+        email_addresses=False,
+        urls=False,
+        currencies=False,
+        file_paths=False,
+        ipv4=False,
+        ipv6=False,
+        lat_longs=False,
         all_dtypes=False,
     ):
         """Class to manage mock data creation of features.
@@ -46,10 +58,34 @@ class Features(MockBase):
         :type dates: bool, optional
         :param texts: Flag that includes column with different text on each line. Defaults to False.
         :type texts: bool, optional
-        :param ints_with_na: Flag that includes column which is the same as the 'ints' column with pd.NA included. Defaults to False.
-        :type ints_with_na: bool, optional
-        :param floats_with_na: Flag that includes column which is the same as the 'floats' column with pd.NA included. Defaults to False.
-        :type floats_with_na: bool, optional
+        :param ints_nullable: Flag that includes column which is the same as the 'ints' column with pd.NA included. Defaults to False.
+        :type ints_nullable: bool, optional
+        :param floats_nullable: Flag that includes column which is the same as the 'floats' column with pd.NA included. Defaults to False.
+        :type floats_nullable: bool, optional
+        :param booleans_nullable: Flag that includes column which is a randomly selected column with boolean values and pd.NA included. Defaults to False.
+        :type booleans_nullable: bool, optional
+        :param full_names: Flag that includes column with first and last names. Defaults to False.
+        :type full_names: bool, optional
+        :param phone_numbers: Flag that includes column with US-based phone numbers. Defaults to True.
+        :type phone_numbers: bool, optional
+        :param addresses: Flag that includes column with addresses. Defaults to True.
+        :type addresses: bool, optional
+        :param countries: Flag that includes column with country names. Defaults to False.
+        :type countries: bool, optional
+        :param email_addresses: Flag that includes column with email addresses. Defaults to True.
+        :type email_addresses: bool, optional
+        :param urls: Flag that includes column with URLs. Defaults to True.
+        :type urls: bool, optional
+        :param currencies: Flag that includes column with US dollar based amounts. Defaults to False.
+        :type currencies: bool, optional
+        :param file_paths: Flag that includes column with file paths at a depth of 3. Defaults to False.
+        :type file_paths: bool, optional
+        :param ipv4: Flag that includes column with different IPv4 addresses. Defaults to False.
+        :type ipv4: bool, optional
+        :param ipv6: Flag that includes column with different IPv6 addresses. Defaults to False.
+        :type ipv6: bool, optional
+        :param lat_longs: Flag that includes column with latitude and longitude values in a tuple. Defaults to False.
+        :type lat_longs: bool, optional
         :param all_dtypes: Flag that includes all columns. Defaults to False.
         :type all_dtypes: bool, optional
         :return: Mock features data.
@@ -102,10 +138,11 @@ class Features(MockBase):
         if self.library == "numpy":
             return data.to_numpy()
         else:
-            if "ints_with_na" in dtypes_to_keep:
-                data["ints_with_na"] = data["ints_with_na"].astype("Int64")
-            if "floats_with_na" in dtypes_to_keep:
-                data["floats_with_na"] = data["floats_with_na"].astype("Float64")
+            if "ints_nullable" in dtypes_to_keep:
+                data["ints_nullable"] = data["ints_nullable"].astype("Int64")
+            if "floats_nullable" in dtypes_to_keep:
+                data["floats_nullable"] = data["floats_nullable"].astype("Float64")
+            data.ww.init()
             return data
 
     @staticmethod
