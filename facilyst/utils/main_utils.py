@@ -1,3 +1,4 @@
+"""Main utility functions."""
 from facilyst.mocks import Dates, Features, Wave
 from facilyst.mocks.mock_types import handle_mock_and_library_type
 
@@ -17,6 +18,9 @@ def create_data(
     :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'pandas'.
     :type library: str, optional
     :param kwargs: Additional key word arguments passed depending on the type of mock data requested.
+    :type kwargs: dict
+    :return: The created data.
+    :rtype: pd or np.ndarray
     """
     mock_type, library = handle_mock_and_library_type(mock_type, library)
 
@@ -60,7 +64,6 @@ def make_features(
     all_dtypes=False,
 ):
     """Convenience function that allows for the creation of mock features data.
-
 
     :param num_rows: The number of observations in the final dataset. Defaults to 100.
     :type num_rows: int, optional

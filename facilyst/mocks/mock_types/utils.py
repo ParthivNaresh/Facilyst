@@ -1,9 +1,19 @@
+"""Utility functions for all mock data types."""
 import numpy as np
 import pandas as pd
 from faker import Faker
 
 
 def handle_mock_and_library_type(mock_type="features", library="pandas"):
+    """Handles the mock_type and library passed to standardize them.
+
+    :param mock_type: The name of the type of mock data. Defaults to returning Features data.
+    :type mock_type: str, optional
+    :param library: The name of the library to which the returned data should belong. Defaults to pandas.
+    :type library: str, optional
+    :return: formatted mock type and library
+    :rtype tuple: (str, str)
+    """
     if mock_type.lower() in ["df", "dataframe", "features", "x"]:
         mock_type_ = "features"
     elif mock_type.lower() in ["dates", "date"]:
@@ -24,11 +34,12 @@ def handle_mock_and_library_type(mock_type="features", library="pandas"):
 
 
 def mock_features_dtypes(num_rows=100):
-    """
-    Internal function that returns the default full dataset.
+    """Internal function that returns the default full dataset.
 
     :param num_rows: The number of observations in the final dataset. Defaults to 100.
+    :type num_rows: int, optional
     :return: The dataset with all columns included.
+    :rtype tuple: (str, str)
     """
     fake = Faker()
 

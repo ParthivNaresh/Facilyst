@@ -9,3 +9,7 @@ coverage:
 codecov:
   notify:
     wait_for_ci: true
+
+ignore:
+  - "facilyst/utils/dataset_utils"
+  - "facilyst/tests/dataset_tests"
