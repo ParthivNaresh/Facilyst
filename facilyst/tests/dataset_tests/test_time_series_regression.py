@@ -1,10 +1,8 @@
 import pytest
 
-from facilyst.tests.dataset_tests.utils import (
-    get_dataset,
-    get_dataset_metadata_by_name,
-    ts_regression_datasets,
-)
+from facilyst.tests.dataset_tests.utils import (get_dataset,
+                                                get_dataset_metadata_by_name,
+                                                ts_regression_datasets)
 
 
 @pytest.mark.parametrize("dataset_name", ts_regression_datasets)
