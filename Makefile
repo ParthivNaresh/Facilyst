@@ -33,4 +33,24 @@ installdeps-dev:
 
 .PHONY: test
 test:
-	pytest facilyst/tests/ -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+	pytest facilyst/tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
+.PHONY: test-datasets
+test:
+	pytest facilyst/tests/dataset_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
+.PHONY: test-models
+test:
+	pytest facilyst/tests/models_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
+.PHONY: test-mocks
+test:
+	pytest facilyst/tests//mock_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
+.PHONY: test-graphs
+test:
+	pytest facilyst/tests//graphs_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
+.PHONY: test-utils
+test:
+	pytest facilyst/tests//utils_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml

@@ -15,8 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - python_version: "3.8"
-          - python_version: "3.9"
+          - python_version: ["3.8", "3.9", "3.10"]
+            command: ["test-datasets", "test-models", "test-mocks", "test-graphs", "test-utils"]
     steps:
       - name: Set up Python ${{ matrix.python_version }}
         uses: actions/setup-python@v2
@@ -40,10 +40,31 @@ jobs:
         run: |
           source test_python/bin/activate
           coverage erase
-      - name: Run unit tests
+      if: ${{ matrix.command == 'test-datasets' }}
+        name: Running Dataset Tests
         run: |
           source test_python/bin/activate
-          make test
+          make test-datasets
+      if: ${{ matrix.command == 'test-models' }}
+        name: Running Models Tests
+        run: |
+          source test_python/bin/activate
+          make test-models
+      if: ${{ matrix.command == 'test-mocks' }}
+        name: Running Mocks Tests
+        run: |
+          source test_python/bin/activate
+          make test-mocks
+      if: ${{ matrix.command == 'test-graphs' }}
+        name: Running Graphs Tests
+        run: |
+          source test_python/bin/activate
+          make test-graphs
+      if: ${{ matrix.command == 'test-utils' }}
+        name: Running Utils Tests
+        run: |
+          source test_python/bin/activate
+          make test-utils
       - name: Upload pytest duration artifact
         uses: actions/upload-artifact@v2
         with:
