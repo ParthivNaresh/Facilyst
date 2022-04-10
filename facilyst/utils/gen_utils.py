@@ -1,4 +1,14 @@
+"""General utility functions."""
+
+
 def _get_subclasses(base_class):
+    """Returns all subclasses to the base class passed.
+
+    :param base_class:
+    :type base_class: str
+    :return: The list of child classes.
+    :rtype: list
+    """
     classes_to_check = base_class.__subclasses__()
 
     subclasses = []
@@ -15,6 +25,8 @@ def handle_problem_type(problem_type):
 
     :param problem_type: The problem type to match.
     :type problem_type: str
+    :return: The standardized problem type.
+    :rtype: str
     """
     if problem_type.lower() in ["regression"]:
         problem_type_ = "regression"

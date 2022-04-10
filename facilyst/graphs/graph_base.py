@@ -1,12 +1,22 @@
+"""Base class for Graph types."""
 import collections.abc
 from abc import ABC, abstractmethod
 
 import numpy as np
 import pandas as pd
-import woodwork as ww
 
 
 class GraphBase(ABC):
+    """Base initialization for all mock types.
+
+    :param graph_obj: The graph object to be used.
+    :type graph_obj: object
+    :param parameters: Parameters specific to the object being passed.
+    :type parameters: dict
+    :param extra_parameters: Extra parameters provided by the child class.
+    :type extra_parameters: dict
+    """
+
     def __init__(self, graph_obj, parameters, extra_parameters):
         self.parameters = parameters
         self.extra_parameters = extra_parameters
@@ -21,21 +31,44 @@ class GraphBase(ABC):
     @property
     @abstractmethod
     def name(self):
-        """Name of the graph"""
+        """Name of the graph."""
 
     def get_figure(self):
+        """Returns the graph figure.
+
+        :return: The Figure object.
+        :rtype: matplotlib.figure.Figure
+        """
         return self.graph_obj.figure.get_figure
 
     def get_size(self):
+        """Returns the size of the graph in inches.
+
+        :return: The size of the graph in the format (width, height).
+        :rtype: np.ndarray
+        """
         return self.graph_obj.figure.get_size_inches()
 
     def resize(self, width=11.7, height=8.27):
+        """Resize the graph. Call .show() after to display the graph.
+
+        :param width: The width of the graph.
+        :type width: float
+        :param height: The height of the graph.
+        :type height: float
+        """
         self.graph_obj.figure.set_size_inches(width, height)
 
     def show(self):
+        """Show the graph.
+
+        :return: The graph.
+        :rtype: matplotlib.figure.Figure
+        """
         return self.graph_obj.figure
 
     def check_passed_data(self):
+        """Checks if the appropriate parameters has been passed to the graph object."""
         dataset_ = self.parameters["data"]
         if dataset_ is None:
             self.check_x_y_without_dataset()
@@ -43,6 +76,12 @@ class GraphBase(ABC):
             self.check_x_y_with_dataset()
 
     def check_x_y_without_dataset(self):
+        """Checks if x and y have been passed appropriately when dataset has not been passed.
+
+        :raises ValueError: If dataset is None and x is not an accepted collection of data.
+        :raises ValueError: If dataset is None and y is not an accepted collection of data.
+        :raises ValueError: If dataset is None and x and y are not one dimensional data.
+        """
         x_ = self.parameters["x"]
         y_ = self.parameters["y"]
 
@@ -63,6 +102,14 @@ class GraphBase(ABC):
             )
 
     def check_x_y_with_dataset(self):
+        """Checks if x and y have been passed appropriately when dataset has not been passed.
+
+        :raises ValueError: If dataset is not of an acceptable type.
+        :raises ValueError: If dataset has been passed and x and y aren't hashable values referencing column names.
+        :raises ValueError: If x or y is None.
+        :raises ValueError: If x could not be found in the dataset.
+        :raises ValueError: If y could not be found in the dataset.
+        """
         dataset_ = self.parameters["data"]
         x_ = self.parameters["x"]
         y_ = self.parameters["y"]

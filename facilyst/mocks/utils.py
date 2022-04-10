@@ -1,3 +1,4 @@
+"""Utility functions for all mock types."""
 from facilyst.mocks import MockBase
 from facilyst.utils.gen_utils import _get_subclasses
 

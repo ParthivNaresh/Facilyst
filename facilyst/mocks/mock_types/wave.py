@@ -1,3 +1,4 @@
+"""A mock type that returns wave data."""
 import numpy as np
 import pandas as pd
 
@@ -5,6 +6,31 @@ from facilyst.mocks import MockBase
 
 
 class Wave(MockBase):
+    """Class to manage mock data creation of a wave.
+
+    :param num_rows: The number of observations in the final dataset. Defaults to 100.
+    :type num_rows: int, optional
+    :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'numpy'.
+    :type library: str, optional
+    :param wave_type: The function off of which the wave will be based. Options are `sine` and `cosine`. Defaults to `sine`.
+    :type wave_type: str, optional
+    :param amplitude: The amplitude (height) of the wave. Defaults to 1.
+    :type amplitude: int, optional
+    :param frequency: The frequency (thickness) of the wave. Defaults to 1.
+    :type frequency: int, optional
+    :param random_amplitudes: Flag that determines if different sections of the wave will have different amplitudes. Defaults to False.
+    :type random_amplitudes: bool, optional
+    :param random_frequency: Flag that determines if different sections of the wave will have different frequencies. Defaults to False.
+    :type random_frequency: bool, optional
+    :param trend: Determines what sort of trend the wave will have. Higher positive values will result in a larger upwards trend, and vice verse.
+    Defaults to 0, which is no trend.
+    :type trend: float, optional
+    :return: Mock wave data.
+    :rtype: np.ndarray by default, can also return pd.DataFrame
+    :raises ValueError: If amplitude is 0.
+    :raises ValueError: If frequency is non-positive.
+    :raises ValueError: If frequency is not a positive integer if `random_amplitude` or `random_frequency` are True.
+    """
 
     name = "Wave"
 
@@ -19,28 +45,6 @@ class Wave(MockBase):
         random_frequency=False,
         trend=0,
     ):
-        """Class to manage mock data creation of a wave.
-
-        :param num_rows: The number of observations in the final dataset. Defaults to 100.
-        :type num_rows: int, optional
-        :param library: The library of which the final dataset should be, options are 'pandas' and 'numpy'. Defaults to 'numpy'.
-        :type library: str, optional
-        :param wave_type: The function off of which the wave will be based. Options are `sine` and `cosine`. Defaults to `sine`.
-        :type wave_type: str, optional
-        :param amplitude: The amplitude (height) of the wave. Defaults to 1.
-        :type amplitude: int, optional
-        :param frequency: The frequency (thickness) of the wave. Defaults to 1.
-        :type frequency: int, optional
-        :param random_amplitudes: Flag that determines if different sections of the wave will have different amplitudes. Defaults to False.
-        :type random_amplitudes: bool, optional
-        :param random_frequency: Flag that determines if different sections of the wave will have different frequencies. Defaults to False.
-        :type random_frequency: bool, optional
-        :param trend: Determines what sort of trend the wave will have. Higher positive values will result in a larger upwards trend, and vice verse.
-        Defaults to 0, which is no trend.
-        :type trend: float, optional
-        :return: Mock wave data.
-        :rtype: np.ndarray by default, can also return pd.DataFrame
-        """
         if wave_type.lower() in ["sin", "sine"]:
             wave_type = "sine"
         elif wave_type.lower() in ["cos", "cosine"]:
@@ -76,6 +80,10 @@ class Wave(MockBase):
         super().__init__(library, num_rows, parameters)
 
     def create_data(self):
+        """Main function to be called to create wave data.
+
+        :return: The final wave data created.
+        """
         data = self.generate_wave()
         if self.trend != 0:
             data = self.add_trend(data)
@@ -83,6 +91,10 @@ class Wave(MockBase):
         return data
 
     def generate_wave(self):
+        """Generates wave data.
+
+        :return: The initial wave data created.
+        """
         if not (self.random_frequency or self.random_amplitudes):
             samples = np.arange(self.num_rows) / self.num_rows
             if self.wave_type == "sine":
@@ -130,6 +142,12 @@ class Wave(MockBase):
         return signal
 
     def add_trend(self, signal):
+        """Adds trend to the data.
+
+        :param signal: Wave data.
+        :type signal: np.ndarray
+        :return: The initial wave data with a trend added.
+        """
         trend_line = np.arange(
             0, np.abs(self.trend), np.abs(self.trend) / self.num_rows
         )
@@ -139,9 +157,10 @@ class Wave(MockBase):
         return signal
 
     def handle_library(self, data):
-        """
-        Handles the library that was selected to determine the format in which the data will be returned.
+        """Handles the library that was selected to determine the format in which the data will be returned.
 
+        :param data: The final data to be returned.
+        :type data: pd.Series or np.ndarray
         :return: The final data created from the appropriate library as a pd.Series or ndarray.
         """
         if self.library.lower() == "numpy":
