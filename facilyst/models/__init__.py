@@ -1,1 +1,2 @@
-from .neural_networks import MLPRegressor
+from .neural_network_base import NeuralNetworkBase
+from .neural_networks import MultiLayerPerceptronRegressor

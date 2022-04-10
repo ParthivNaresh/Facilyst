@@ -1,1 +1,1 @@
-from .mlp_regressor import MLPRegressor
+from .mlp_regressor import MultiLayerPerceptronRegressor
