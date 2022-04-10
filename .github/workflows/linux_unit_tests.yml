@@ -39,27 +39,27 @@ jobs:
         run: |
           source test_python/bin/activate
           coverage erase
-      if: ${{ matrix.command == 'test-datasets' }}
+      - if: ${{ matrix.command == 'test-datasets' }}
         name: Running Dataset Tests
         run: |
           source test_python/bin/activate
           make test-datasets
-      if: ${{ matrix.command == 'test-models' }}
+      - if: ${{ matrix.command == 'test-models' }}
         name: Running Models Tests
         run: |
           source test_python/bin/activate
           make test-models
-      if: ${{ matrix.command == 'test-mocks' }}
+      - if: ${{ matrix.command == 'test-mocks' }}
         name: Running Mocks Tests
         run: |
           source test_python/bin/activate
           make test-mocks
-      if: ${{ matrix.command == 'test-graphs' }}
+      - if: ${{ matrix.command == 'test-graphs' }}
         name: Running Graphs Tests
         run: |
           source test_python/bin/activate
           make test-graphs
-      if: ${{ matrix.command == 'test-utils' }}
+      - if: ${{ matrix.command == 'test-utils' }}
         name: Running Utils Tests
         run: |
           source test_python/bin/activate
