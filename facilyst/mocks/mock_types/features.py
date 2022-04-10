@@ -1,5 +1,6 @@
 """A mock type that returns features data."""
 import pandas as pd
+import woodwork as ww
 
 from facilyst.mocks import MockBase
 from facilyst.mocks.mock_types.utils import mock_features_dtypes

@@ -17,14 +17,18 @@ Release Notes
         * Added ``handle_data_and_library_type`` and ``mock_dtypes`` helper functions :pr:`3`
     * Fixes
     * Changes
+        * Pinned to ``numpy==1.22.3``, ``scipy==1.8.0``, and ``plotly==5.7.0`` :pr:`6`
         * Removed ``Target`` mock data type :pr:`4`
     * Documentation Changes
         * Added black profile to isort command to get parity between the two for new lint errors :pr:`6`
+        * Updated docstrings for numerous files :pr:`6`
         * Added and updated docstrings for a variety of classes and functions :pr:`4`
     * Testing Changes
-        * Separated make file commands to parallelize testing :pr:`6`
+        * Updated test requirements to ``pytest>=7.1.1``, ``pytest-xdist>=2.5.0``, ``pytest-timeout>=2.1.0``, and ``pytest-cov>=3.0.0`` :pr:`6`
+        * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Parallelized ``linux_unit_tests`` testing :pr:`6`
         * Added ``setup.py`` to enable the build process :pr:`3`
         * Added ``lint_tests`` GitHub Action to check for lint errors on PRs :pr:`3`
         * Added ``linux_unit_tests`` GitHub Action to check that all tests pass on PRs :pr:`3`
