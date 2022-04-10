@@ -32,7 +32,7 @@ def handle_problem_type(problem_type):
         problem_type_ = "regression"
     elif problem_type.lower() in ["binary"]:
         problem_type_ = "binary"
-    elif problem_type.lower() in ["multiclass"]:
+    elif problem_type.lower() in ["multiclass", "multi", "multi class"]:
         problem_type_ = "multiclass"
     elif problem_type.lower() in [
         "time series regression",
