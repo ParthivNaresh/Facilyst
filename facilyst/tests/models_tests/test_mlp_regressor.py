@@ -1,12 +1,9 @@
 import pandas as pd
 
 from facilyst.models.neural_networks.mlp_regressor import MultiLayerPerceptronRegressor
-from facilyst.tests.dataset_tests.utils import get_dataset
 
 
 def test_mlp_regressor(numeric_features_regression):
-    from pprint import pprint
-
     x, y = numeric_features_regression
     mlp_regressor = MultiLayerPerceptronRegressor()
     mlp_regressor.fit(x[:80], y[:80])

@@ -36,21 +36,21 @@ test:
 	pytest facilyst/tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-datasets
-test:
+test-datasets:
 	pytest facilyst/tests/dataset_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-models
-test:
+test-models:
 	pytest facilyst/tests/models_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-mocks
-test:
+test-mocks:
 	pytest facilyst/tests//mock_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-graphs
-test:
+test-graphs:
 	pytest facilyst/tests//graphs_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-utils
-test:
+test-utils:
 	pytest facilyst/tests//utils_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml

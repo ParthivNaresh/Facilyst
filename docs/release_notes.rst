@@ -21,6 +21,7 @@ Release Notes
     * Documentation Changes
         * Added and updated docstrings for a variety of classes and functions :pr:`4`
     * Testing Changes
+        * Separated make file commands to parallelize testing :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
         * Added ``setup.py`` to enable the build process :pr:`3`

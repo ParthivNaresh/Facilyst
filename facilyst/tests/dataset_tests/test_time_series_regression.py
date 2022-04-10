@@ -1,4 +1,3 @@
-import pandas as pd
 import pytest
 
 from facilyst.tests.dataset_tests.utils import (
