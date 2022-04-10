@@ -8,7 +8,7 @@ clean:
 
 .PHONY: lint
 lint:
-	isort --check-only facilyst
+	isort --check-only facilyst --profile black
 	black facilyst -t py39 --check
 
 .PHONY: lint-fix
