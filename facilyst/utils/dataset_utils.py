@@ -1,3 +1,4 @@
+"""Utility functions for handling LFS stored datasets."""
 import os
 
 import pandas as pd
@@ -11,6 +12,8 @@ def get_dataset_metadata_by_problem_type(problem_type):
 
     :param problem_type: The problem type of the datasets to match.
     :type problem_type: str
+    :return: All metadata corresponding to datasets matching the problem type.
+    :rtype dict:
     """
     dataset_metadata_dict = {}
     for dataset_name, dataset_metadata in datasets_metadata_dict.items():
@@ -24,6 +27,8 @@ def get_dataset_metadata_by_name(dataset_name):
 
     :param dataset_name: The name of the datasets to match.
     :type dataset_name: str
+    :return: A dictionary of the dataset name with the associated metadata.
+    :rtype dict:
     """
     return {dataset_name: datasets_metadata_dict[dataset_name]}
 
@@ -33,6 +38,8 @@ def get_dataset(dataset_name):
 
     :param dataset_name: The name of the dataset to match.
     :type dataset_name: str
+    :return: The features and target of the dataset.
+    :rtype tuple: (x, y)
     """
     if dataset_name not in datasets_metadata_dict:
         raise ValueError("That dataset doesn't exist in the datasets directory.")
@@ -46,34 +53,54 @@ def get_dataset(dataset_name):
         f"{os.path.dirname(os.getcwd())}/datasets/{type_}/{dataset_name}.csv"
     )
 
-    X = pd.DataFrame(dataset[features], columns=features)
+    x = pd.DataFrame(dataset[features], columns=features)
     y = pd.Series(dataset[target], name=target)
 
-    X.ww.init()
+    x.ww.init()
     y.ww.init()
 
-    return X, y
+    return x, y
 
 
 def regression_dataset_names():
+    """Function that returns the names of all regression datasets.
+
+    :return: A list of dataset names.
+    :rtype list:
+    """
     metadata = get_dataset_metadata_by_problem_type("regression")
     names = list(metadata.keys())
     return names
 
 
 def binary_dataset_names():
+    """Function that returns the names of all binary datasets.
+
+    :return: A list of dataset names.
+    :rtype list:
+    """
     metadata = get_dataset_metadata_by_problem_type("binary")
     names = list(metadata.keys())
     return names
 
 
 def multiclass_dataset_names():
+    """Function that returns the names of all multiclass datasets.
+
+    :return: A list of dataset names.
+    :rtype list:
+    """
     metadata = get_dataset_metadata_by_problem_type("multiclass")
     names = list(metadata.keys())
     return names
 
 
 def ts_regression_dataset_names():
+    """Function that returns the names of all time series regression datasets.
+
+    :return: A list of dataset names.
+    :rtype list:
+    """
     metadata = get_dataset_metadata_by_problem_type("time series regression")
     names = list(metadata.keys())
     return names

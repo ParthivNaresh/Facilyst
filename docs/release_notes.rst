@@ -19,6 +19,7 @@ Release Notes
     * Changes
         * Removed ``Target`` mock data type :pr:`4`
     * Documentation Changes
+        * Added black profile to isort command to get parity between the two for new lint errors :pr:`6`
         * Added and updated docstrings for a variety of classes and functions :pr:`4`
     * Testing Changes
         * Separated make file commands to parallelize testing :pr:`6`

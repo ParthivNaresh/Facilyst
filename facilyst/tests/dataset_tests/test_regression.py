@@ -1,13 +1,14 @@
 import pytest
 
-from facilyst.tests.dataset_tests.utils import (get_dataset,
-                                                get_dataset_metadata_by_name,
-                                                regression_datasets)
+from facilyst.utils import (
+    get_dataset,
+    get_dataset_metadata_by_name,
+    regression_datasets,
+)
 
 
 @pytest.mark.parametrize("dataset_name", regression_datasets)
 def test_regression_datasets(dataset_name):
-    print(dataset_name)
     x, y = get_dataset(dataset_name)
     metadata = get_dataset_metadata_by_name(dataset_name)[dataset_name]
 

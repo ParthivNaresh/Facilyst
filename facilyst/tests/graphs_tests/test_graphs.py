@@ -1,6 +1,5 @@
 import matplotlib
 import numpy as np
-import pandas as pd
 import pytest
 
 from facilyst.graphs import Scatter

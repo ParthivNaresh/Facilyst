@@ -13,7 +13,7 @@ lint:
 
 .PHONY: lint-fix
 lint-fix:
-	isort facilyst
+	isort facilyst --profile black
 	black -t py39 facilyst
 	pydocstyle facilyst/ --convention=google --add-ignore=D104,D107 --add-select=D400 --match-dir='^(?!(tests)).*'
 

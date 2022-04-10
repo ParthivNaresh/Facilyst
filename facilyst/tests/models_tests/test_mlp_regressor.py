@@ -1,7 +1,6 @@
 import pandas as pd
 
-from facilyst.models.neural_networks.mlp_regressor import \
-    MultiLayerPerceptronRegressor
+from facilyst.models import MultiLayerPerceptronRegressor
 
 
 def test_mlp_regressor(numeric_features_regression):

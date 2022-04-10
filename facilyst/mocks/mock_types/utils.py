@@ -11,6 +11,8 @@ def handle_mock_and_library_type(mock_type="features", library="pandas"):
     :type mock_type: str, optional
     :param library: The name of the library to which the returned data should belong. Defaults to pandas.
     :type library: str, optional
+    :return: formatted mock type and library
+    :rtype tuple: (str, str)
     """
     if mock_type.lower() in ["df", "dataframe", "features", "x"]:
         mock_type_ = "features"
@@ -37,6 +39,7 @@ def mock_features_dtypes(num_rows=100):
     :param num_rows: The number of observations in the final dataset. Defaults to 100.
     :type num_rows: int, optional
     :return: The dataset with all columns included.
+    :rtype tuple: (str, str)
     """
     fake = Faker()
 
